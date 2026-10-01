@@ -5,8 +5,9 @@ name: Gitflow Automation
 #   release/x.y.z    --PR--> main    (aprovado -> merge, cria tag + GitHub Release,
 #                                      e sincroniza dev com main em seguida)
 #
-# Pre-requisito no GitHub: branch "main" protegida exigindo >=1 aprovacao
-# antes do merge (Settings > Branches > Branch protection rules).
+# Pre-requisito no GitHub: branches "main" e "dev" protegidas exigindo >=1
+# aprovacao antes do merge (Settings > Branches > Branch protection rules).
+# A sincronizacao final (dev <- main) tambem passa por PR por esse motivo.
 
 on:
   pull_request_review:
@@ -139,10 +140,22 @@ jobs:
             --title "Release ${{ steps.release_merge.outputs.tag }}" \
             --generate-notes
 
-      - name: Sincronizar dev com main
+      - name: Abrir PR de sincronizacao (dev <- main)
         if: steps.branch.outputs.type == 'release'
         run: |
+          TAG="${{ steps.release_merge.outputs.tag }}"
+          SYNC_BRANCH="sync/dev-with-main-${TAG}"
+
+          # dev esta protegida (exige aprovacao), entao a sincronizacao tambem
+          # precisa passar por PR -- nao da pra empurrar direto com o token da Action.
           git fetch origin dev main
-          git checkout dev
-          git merge --no-edit origin/main
-          git push origin dev
+          git checkout -b "$SYNC_BRANCH" origin/main
+          git push origin "$SYNC_BRANCH"
+
+          SYNC_PR_URL=$(gh pr create \
+            --base dev \
+            --head "$SYNC_BRANCH" \
+            --title "sync: igualar dev com main (${TAG})" \
+            --body "Traz para a dev o commit da release ${TAG} (merge da release/* + CHANGELOG.md), mantendo dev igual a main.")
+
+          gh pr merge "$SYNC_PR_URL" --merge --auto --delete-branch
