@@ -1,7 +1,7 @@
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#F5F3EF]">
-      <p className="font-sans text-[#1C1B18]">Acervo Digital LM</p>
+    <div className="min-h-screen flex items-center justify-center bg-lm-ivory">
+      <p className="font-serif text-lm-charcoal text-2xl">Acervo Digital LM</p>
     </div>
   )
 }
