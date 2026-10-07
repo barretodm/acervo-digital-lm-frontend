@@ -1,1 +1,40 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-serif: 'Lora', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+
+  --color-lm-ivory: #f5f3ef;
+  --color-lm-ivory-bright: #fdfcfa;
+  --color-lm-ivory-deep: #edeae4;
+  --color-lm-admin-bg: #f0ede8;
+  --color-lm-charcoal: #1c1b18;
+  --color-lm-charcoal-mid: #3a3830;
+  --color-lm-warm-gray: #6b6460;
+  --color-lm-muted: #a09890;
+  --color-lm-placeholder: #c4bfb8;
+  --color-lm-border: #e0dbd4;
+  --color-lm-border-admin: #d8d4cf;
+  --color-lm-border-dashed: #d4cfca;
+  --color-lm-image-bg: #e8e4dc;
+  --color-lm-footer-muted: #706660;
+  --color-lm-red: #c41230;
+  --color-lm-red-dark: #8f0b1f;
+  --color-lm-red-light: #fff0f2;
+  --color-lm-red-light-hover: #ffe2e6;
+  --color-lm-red-light-border: #f0a0ab;
+  --color-lm-gray-mark: #a8a8a8;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-lm-ivory);
+  color: var(--color-lm-charcoal);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-lm-border-dashed) transparent;
+}
