@@ -1,5 +1,6 @@
 import AdminHeader from '../../components/layout/AdminHeader'
 import { obras } from '../../mocks/obras'
+import { fotosObra } from '../../mocks/fotosObra'
 
 const STATUS = [
   { chave: 'aberto', label: 'Disponível' },
@@ -7,6 +8,10 @@ const STATUS = [
   { chave: 'reservado', label: 'Reservado' },
   { chave: 'vendido', label: 'Vendido' },
 ]
+
+function fotoCapa(obraId) {
+  return fotosObra.find((foto) => foto.obra_id === obraId && foto.capa)?.url
+}
 
 function ListaObras() {
   const obrasAtivas = obras.filter((obra) => obra.ativa)
@@ -45,6 +50,31 @@ function ListaObras() {
               </div>
             )
           })}
+        </div>
+
+        <h2 className="font-sans font-semibold text-lm-charcoal text-base mb-4">
+          Obras em exibição ({obrasAtivas.length})
+        </h2>
+
+        <div className="space-y-3">
+          {obrasAtivas.map((obra) => (
+            <div key={obra.id} className="bg-white border border-lm-border p-4 flex gap-4 items-start">
+              <img
+                src={fotoCapa(obra.id)}
+                alt={obra.artista}
+                className="w-16 h-20 object-cover bg-lm-image-bg flex-shrink-0"
+              />
+              <div>
+                <p className="font-sans font-semibold text-lm-charcoal text-base">{obra.artista}</p>
+                {obra.titulo && (
+                  <p className="font-sans text-sm text-lm-warm-gray italic">{obra.titulo}</p>
+                )}
+                <p className="font-sans text-xs text-lm-muted mt-0.5">
+                  {obra.tecnica} · {obra.ano}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
       </main>
     </div>
