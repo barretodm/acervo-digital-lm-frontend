@@ -12,6 +12,10 @@ const STATUS = [
   { chave: 'vendido', label: 'Vendido' },
 ]
 
+// "Vendido" sai do acervo ativo automaticamente (RF11/RF13), entao nunca
+// aparece em obrasAtivas -- nao faz sentido no resumo da lista ativa.
+const STATUS_RESUMO = STATUS.filter((status) => status.chave !== 'vendido')
+
 function fotoCapa(obraId) {
   return fotosObra.find((foto) => foto.obra_id === obraId && foto.capa)?.url
 }
@@ -71,8 +75,8 @@ function ListaObras() {
         </button>
 
         <p className="text-xs text-lm-muted font-sans mb-2">Toque em um cartão para filtrar por status:</p>
-        <div className="grid grid-cols-4 gap-3 mb-6">
-          {STATUS.map((status) => {
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          {STATUS_RESUMO.map((status) => {
             const quantidade = obrasAtivas.filter((obra) => obra.status === status.chave).length
             const ativo = filtroStatus === status.chave
 
