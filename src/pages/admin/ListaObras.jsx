@@ -1,6 +1,16 @@
 import AdminHeader from '../../components/layout/AdminHeader'
+import { obras } from '../../mocks/obras'
+
+const STATUS = [
+  { chave: 'aberto', label: 'Disponível' },
+  { chave: 'em_conversa', label: 'Em conversa' },
+  { chave: 'reservado', label: 'Reservado' },
+  { chave: 'vendido', label: 'Vendido' },
+]
 
 function ListaObras() {
+  const obrasAtivas = obras.filter((obra) => obra.ativa)
+
   function handleLogout() {
     alert('sair (ainda nao implementado)')
   }
@@ -23,6 +33,19 @@ function ListaObras() {
           </svg>
           Cadastrar Nova Obra
         </button>
+
+        <div className="grid grid-cols-4 gap-3 mb-8">
+          {STATUS.map((status) => {
+            const quantidade = obrasAtivas.filter((obra) => obra.status === status.chave).length
+
+            return (
+              <div key={status.chave} className="bg-white border border-lm-border px-2 py-4 text-center">
+                <p className="font-sans font-bold text-2xl text-lm-charcoal">{quantidade}</p>
+                <p className="font-sans text-xs uppercase tracking-wide text-lm-warm-gray mt-1">{status.label}</p>
+              </div>
+            )
+          })}
+        </div>
       </main>
     </div>
   )
