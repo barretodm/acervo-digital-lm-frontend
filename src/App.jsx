@@ -14,6 +14,7 @@ import Faixa from './components/faixa_titulo.jsx';
 import Detalhe from './components/obra_detalhes.jsx';
 import ListaObras from './pages/admin/ListaObras'
 import InteressesObra from './pages/admin/InteressesObra'
+import HistoricoObras from './pages/admin/HistoricoObras'
 
 function App() {
   return (
@@ -62,6 +63,7 @@ function App() {
 
           <Route path="/admin" element={<ListaObras />} />
           <Route path="/admin/interesses" element={<InteressesObra />} />
+          <Route path="/admin/historico" element={<HistoricoObras />} />
 
         </Routes>
 
