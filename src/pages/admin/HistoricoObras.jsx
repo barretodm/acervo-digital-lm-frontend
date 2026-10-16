@@ -33,6 +33,11 @@ function HistoricoObras() {
           Obras que foram removidas do acervo ativo. Você pode reativá-las a qualquer momento.
         </p>
 
+        {obrasInativas.length === 0 ? (
+          <div className="bg-white border border-lm-border p-10 text-center text-lm-muted font-sans text-sm">
+            Nenhuma obra no histórico.
+          </div>
+        ) : (
         <div className="space-y-3">
           {obrasInativas.map((obra) => (
             <div key={obra.id} className="bg-white border border-lm-border p-4 flex gap-4 items-center">
@@ -61,6 +66,7 @@ function HistoricoObras() {
             </div>
           ))}
         </div>
+        )}
       </main>
     </div>
   )
