@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import AdminHeader from '../../components/layout/AdminHeader'
 import { obras as obrasIniciais } from '../../mocks/obras'
+import { interesses } from '../../mocks/interesses'
 import { STATUS } from '../../constants/status'
 import { fotoCapa } from '../../utils/obras'
 
 function InteressesObra({ obraId = 'c5494231-4efc-48b3-9466-bcb91ca5cbd9' }) {
   const [obras, setObras] = useState(obrasIniciais)
   const obra = obras.find((item) => item.id === obraId)
+  const interessesDaObra = interesses.filter((interesse) => interesse.obra_id === obraId)
 
   function handleStatusChange(novoStatus) {
     setObras((lista) =>
@@ -59,6 +61,14 @@ function InteressesObra({ obraId = 'c5494231-4efc-48b3-9466-bcb91ca5cbd9' }) {
             </select>
           </div>
         </div>
+
+        <h2 className="font-sans font-semibold text-lm-charcoal text-base mb-4">
+          {interessesDaObra.length === 0
+            ? 'Nenhum interesse recebido'
+            : `${interessesDaObra.length} interesse${interessesDaObra.length > 1 ? 's' : ''} recebido${interessesDaObra.length > 1 ? 's' : ''}`}
+        </h2>
+
+        <div className="space-y-3"></div>
       </main>
     </div>
   )
