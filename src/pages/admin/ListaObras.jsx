@@ -2,23 +2,9 @@ import { useState } from 'react'
 import AdminHeader from '../../components/layout/AdminHeader'
 import StatusBadge from '../../components/common/StatusBadge'
 import { obras as obrasIniciais } from '../../mocks/obras'
-import { fotosObra } from '../../mocks/fotosObra'
 import { interesses } from '../../mocks/interesses'
-
-const STATUS = [
-  { chave: 'aberto', label: 'Disponível' },
-  { chave: 'em_conversa', label: 'Em conversa' },
-  { chave: 'reservado', label: 'Reservado' },
-  { chave: 'vendido', label: 'Vendido' },
-]
-
-// "Vendido" sai do acervo ativo automaticamente (RF11/RF13), entao nunca
-// aparece em obrasAtivas -- nao faz sentido no resumo da lista ativa.
-const STATUS_RESUMO = STATUS.filter((status) => status.chave !== 'vendido')
-
-function fotoCapa(obraId) {
-  return fotosObra.find((foto) => foto.obra_id === obraId && foto.capa)?.url
-}
+import { STATUS, STATUS_RESUMO } from '../../constants/status'
+import { fotoCapa } from '../../utils/obras'
 
 function ListaObras() {
   const [obras, setObras] = useState(obrasIniciais)
