@@ -2,6 +2,7 @@ import AdminHeader from '../../components/layout/AdminHeader'
 import StatusBadge from '../../components/common/StatusBadge'
 import { obras } from '../../mocks/obras'
 import { fotosObra } from '../../mocks/fotosObra'
+import { interesses } from '../../mocks/interesses'
 
 const STATUS = [
   { chave: 'aberto', label: 'Disponível' },
@@ -27,6 +28,10 @@ function ListaObras() {
 
   function handleEditar(obraId) {
     alert(`editar obra ${obraId} (ainda nao implementado)`)
+  }
+
+  function handleInteresses(obraId) {
+    alert(`interesses da obra ${obraId} (ainda nao implementado)`)
   }
 
   return (
@@ -62,7 +67,10 @@ function ListaObras() {
         </h2>
 
         <div className="space-y-3">
-          {obrasAtivas.map((obra) => (
+          {obrasAtivas.map((obra) => {
+            const nInteresses = interesses.filter((interesse) => interesse.obra_id === obra.id).length
+
+            return (
             <div key={obra.id} className="bg-white border border-lm-border p-4 flex gap-4 items-start">
               <img
                 src={fotoCapa(obra.id)}
@@ -101,10 +109,24 @@ function ListaObras() {
                   >
                     Editar
                   </button>
+
+                  <button
+                    onClick={() => handleInteresses(obra.id)}
+                    className={`text-xs font-sans px-3 py-1.5 border transition-colors ${
+                      nInteresses > 0
+                        ? 'text-lm-red border-lm-red-light-border bg-lm-red-light hover:bg-lm-red-light-hover'
+                        : 'text-lm-muted border-lm-border'
+                    }`}
+                  >
+                    {nInteresses > 0
+                      ? `${nInteresses} interesse${nInteresses > 1 ? 's' : ''}`
+                      : 'Sem interesses'}
+                  </button>
                 </div>
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       </main>
     </div>
