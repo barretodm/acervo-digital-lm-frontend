@@ -1,10 +1,20 @@
+import { useState } from 'react'
 import AdminHeader from '../../components/layout/AdminHeader'
 import StatusBadge from '../../components/common/StatusBadge'
-import { obras } from '../../mocks/obras'
+import { obras as obrasIniciais } from '../../mocks/obras'
 import { fotoCapa } from '../../utils/obras'
 
 function HistoricoObras() {
+  const [obras, setObras] = useState(obrasIniciais)
   const obrasInativas = obras.filter((obra) => !obra.ativa)
+
+  function handleReativar(obraId) {
+    setObras((lista) =>
+      lista.map((obra) =>
+        obra.id === obraId ? { ...obra, ativa: true, status: 'aberto' } : obra
+      )
+    )
+  }
 
   function handleBack() {
     alert('voltar (ainda nao implementado)')
@@ -41,6 +51,13 @@ function HistoricoObras() {
                   <StatusBadge status={obra.status} />
                 </p>
               </div>
+
+              <button
+                onClick={() => handleReativar(obra.id)}
+                className="text-sm font-sans text-emerald-700 border border-emerald-300 px-4 py-2 hover:bg-emerald-50 transition-colors whitespace-nowrap"
+              >
+                Reativar
+              </button>
             </div>
           ))}
         </div>
