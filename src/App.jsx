@@ -13,6 +13,7 @@ import Login from './components/login_card.jsx'
 import Faixa from './components/faixa_titulo.jsx';
 import Detalhe from './components/obra_detalhes.jsx';
 import ListaObras from './pages/admin/ListaObras'
+import InteressesObra from './pages/admin/InteressesObra'
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
           } />
 
           <Route path="/admin" element={<ListaObras />} />
+          <Route path="/admin/interesses" element={<InteressesObra />} />
 
         </Routes>
 
