@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import AdminHeader from '../../components/layout/AdminHeader'
 import StatusBadge from '../../components/common/StatusBadge'
-import { obras } from '../../mocks/obras'
+import { obras as obrasIniciais } from '../../mocks/obras'
 import { fotosObra } from '../../mocks/fotosObra'
 import { interesses } from '../../mocks/interesses'
 
@@ -16,7 +17,15 @@ function fotoCapa(obraId) {
 }
 
 function ListaObras() {
+  const [obras, setObras] = useState(obrasIniciais)
+  const [confirmandoExclusao, setConfirmandoExclusao] = useState(null)
+
   const obrasAtivas = obras.filter((obra) => obra.ativa)
+
+  function handleExcluir(obraId) {
+    setObras((lista) => lista.filter((obra) => obra.id !== obraId))
+    setConfirmandoExclusao(null)
+  }
 
   function handleLogout() {
     alert('sair (ainda nao implementado)')
@@ -122,6 +131,31 @@ function ListaObras() {
                       ? `${nInteresses} interesse${nInteresses > 1 ? 's' : ''}`
                       : 'Sem interesses'}
                   </button>
+
+                  {confirmandoExclusao === obra.id ? (
+                    <div className="flex items-center gap-1.5 ml-auto">
+                      <span className="text-xs text-lm-warm-gray font-sans">Confirmar exclusão?</span>
+                      <button
+                        onClick={() => handleExcluir(obra.id)}
+                        className="text-xs font-sans text-white bg-red-600 hover:bg-red-700 px-3 py-1.5 transition-colors"
+                      >
+                        Sim, excluir
+                      </button>
+                      <button
+                        onClick={() => setConfirmandoExclusao(null)}
+                        className="text-xs font-sans text-lm-warm-gray border border-lm-border px-3 py-1.5 hover:text-lm-charcoal transition-colors"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setConfirmandoExclusao(obra.id)}
+                      className="text-xs font-sans text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 transition-colors ml-auto"
+                    >
+                      Excluir
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
