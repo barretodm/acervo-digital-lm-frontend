@@ -51,6 +51,10 @@ function ListaObras() {
     alert(`interesses da obra ${obraId} (ainda nao implementado)`)
   }
 
+  function handleHistorico() {
+    alert('historico de obras (ainda nao implementado)')
+  }
+
   return (
     <div className="min-h-screen bg-lm-admin-bg flex flex-col">
       <AdminHeader title="Painel da Galeria" onLogout={handleLogout} />
@@ -205,6 +209,22 @@ function ListaObras() {
             </div>
             )
           })}
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-lm-border-admin">
+          <button
+            onClick={handleHistorico}
+            className="flex items-center gap-2 text-sm text-lm-warm-gray hover:text-lm-charcoal transition-colors font-sans"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+              />
+            </svg>
+            Ver histórico de obras removidas ({obras.filter((obra) => !obra.ativa).length})
+          </button>
         </div>
       </main>
     </div>
