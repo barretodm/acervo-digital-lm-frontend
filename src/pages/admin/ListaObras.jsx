@@ -157,18 +157,18 @@ function ListaObras() {
                     Editar
                   </button>
 
-                  <button
-                    onClick={() => handleInteresses(obra.id)}
-                    className={`text-xs font-sans px-3 py-1.5 border transition-colors ${
-                      nInteresses > 0
-                        ? 'text-lm-red border-lm-red-light-border bg-lm-red-light hover:bg-lm-red-light-hover'
-                        : 'text-lm-muted border-lm-border'
-                    }`}
-                  >
-                    {nInteresses > 0
-                      ? `${nInteresses} interesse${nInteresses > 1 ? 's' : ''}`
-                      : 'Sem interesses'}
-                  </button>
+                  {nInteresses > 0 ? (
+                    <button
+                      onClick={() => handleInteresses(obra.id)}
+                      className="text-xs font-sans px-3 py-1.5 border transition-colors text-lm-red border-lm-red-light-border bg-lm-red-light hover:bg-lm-red-light-hover"
+                    >
+                      {`${nInteresses} interesse${nInteresses > 1 ? 's' : ''}`}
+                    </button>
+                  ) : (
+                    <span className="text-xs font-sans px-3 py-1.5 border text-lm-muted border-lm-border">
+                      Sem interesses
+                    </span>
+                  )}
 
                   {confirmandoExclusao === obra.id ? (
                     <div className="flex items-center gap-1.5 ml-auto">
