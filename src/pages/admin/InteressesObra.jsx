@@ -103,6 +103,14 @@ function InteressesObra({ obraId = 'c5494231-4efc-48b3-9466-bcb91ca5cbd9' }) {
                   {interesse.telefone}
                 </a>
               </div>
+
+              {interesse.mensagem && (
+                <div className="mt-3 pt-3 border-t border-lm-admin-bg">
+                  <p className="text-sm text-lm-warm-gray font-sans italic leading-relaxed">
+                    "{interesse.mensagem}"
+                  </p>
+                </div>
+              )}
             </div>
           ))}
         </div>
