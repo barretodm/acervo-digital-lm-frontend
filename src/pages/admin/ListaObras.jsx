@@ -25,6 +25,10 @@ function ListaObras() {
     alert('cadastrar nova obra (ainda nao implementado)')
   }
 
+  function handleEditar(obraId) {
+    alert(`editar obra ${obraId} (ainda nao implementado)`)
+  }
+
   return (
     <div className="min-h-screen bg-lm-admin-bg flex flex-col">
       <AdminHeader title="Painel da Galeria" onLogout={handleLogout} />
@@ -90,6 +94,13 @@ function ListaObras() {
                       </option>
                     ))}
                   </select>
+
+                  <button
+                    onClick={() => handleEditar(obra.id)}
+                    className="text-xs font-sans text-lm-warm-gray hover:text-lm-charcoal border border-lm-border px-3 py-1.5 transition-colors"
+                  >
+                    Editar
+                  </button>
                 </div>
               </div>
             </div>
