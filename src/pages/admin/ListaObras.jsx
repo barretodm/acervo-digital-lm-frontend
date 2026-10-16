@@ -1,4 +1,5 @@
 import AdminHeader from '../../components/layout/AdminHeader'
+import StatusBadge from '../../components/common/StatusBadge'
 import { obras } from '../../mocks/obras'
 import { fotosObra } from '../../mocks/fotosObra'
 
@@ -64,14 +65,19 @@ function ListaObras() {
                 alt={obra.artista}
                 className="w-16 h-20 object-cover bg-lm-image-bg flex-shrink-0"
               />
-              <div>
-                <p className="font-sans font-semibold text-lm-charcoal text-base">{obra.artista}</p>
-                {obra.titulo && (
-                  <p className="font-sans text-sm text-lm-warm-gray italic">{obra.titulo}</p>
-                )}
-                <p className="font-sans text-xs text-lm-muted mt-0.5">
-                  {obra.tecnica} · {obra.ano}
-                </p>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-2 flex-wrap">
+                  <div>
+                    <p className="font-sans font-semibold text-lm-charcoal text-base">{obra.artista}</p>
+                    {obra.titulo && (
+                      <p className="font-sans text-sm text-lm-warm-gray italic">{obra.titulo}</p>
+                    )}
+                    <p className="font-sans text-xs text-lm-muted mt-0.5">
+                      {obra.tecnica} · {obra.ano}
+                    </p>
+                  </div>
+                  <StatusBadge status={obra.status} />
+                </div>
               </div>
             </div>
           ))}
