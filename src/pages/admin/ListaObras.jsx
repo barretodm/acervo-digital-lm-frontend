@@ -78,6 +78,19 @@ function ListaObras() {
                   </div>
                   <StatusBadge status={obra.status} />
                 </div>
+
+                <div className="mt-3 flex flex-wrap gap-2 items-center">
+                  <select
+                    defaultValue={obra.status}
+                    className="border border-lm-border text-xs text-lm-charcoal px-2 py-1.5 bg-lm-ivory focus:outline-none"
+                  >
+                    {STATUS.map((status) => (
+                      <option key={status.chave} value={status.chave}>
+                        {status.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
           ))}
