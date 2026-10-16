@@ -1,6 +1,11 @@
 import AdminHeader from '../../components/layout/AdminHeader'
+import StatusBadge from '../../components/common/StatusBadge'
+import { obras } from '../../mocks/obras'
+import { fotoCapa } from '../../utils/obras'
 
 function HistoricoObras() {
+  const obrasInativas = obras.filter((obra) => !obra.ativa)
+
   function handleBack() {
     alert('voltar (ainda nao implementado)')
   }
@@ -17,6 +22,28 @@ function HistoricoObras() {
         <p className="text-sm text-lm-warm-gray font-sans mb-6 leading-relaxed">
           Obras que foram removidas do acervo ativo. Você pode reativá-las a qualquer momento.
         </p>
+
+        <div className="space-y-3">
+          {obrasInativas.map((obra) => (
+            <div key={obra.id} className="bg-white border border-lm-border p-4 flex gap-4 items-center">
+              <img
+                src={fotoCapa(obra.id)}
+                alt={obra.artista}
+                className="w-14 h-18 object-cover bg-lm-image-bg flex-shrink-0"
+              />
+              <div className="flex-1">
+                <p className="font-sans font-semibold text-lm-charcoal">{obra.artista}</p>
+                {obra.titulo && (
+                  <p className="text-sm italic text-lm-warm-gray font-sans">{obra.titulo}</p>
+                )}
+                <p className="text-xs text-lm-muted font-sans mt-0.5 flex items-center gap-2">
+                  {obra.tecnica} · {obra.ano}
+                  <StatusBadge status={obra.status} />
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </main>
     </div>
   )
