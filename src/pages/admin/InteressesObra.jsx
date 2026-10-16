@@ -68,7 +68,16 @@ function InteressesObra({ obraId = 'c5494231-4efc-48b3-9466-bcb91ca5cbd9' }) {
             : `${interessesDaObra.length} interesse${interessesDaObra.length > 1 ? 's' : ''} recebido${interessesDaObra.length > 1 ? 's' : ''}`}
         </h2>
 
-        <div className="space-y-3"></div>
+        <div className="space-y-3">
+          {interessesDaObra.map((interesse) => (
+            <div key={interesse.id} className="bg-white border border-lm-border p-5">
+              <p className="font-sans font-semibold text-lm-charcoal text-base">{interesse.nome}</p>
+              <p className="text-xs text-lm-muted font-sans mt-0.5">
+                Recebido em {new Date(interesse.criado_em).toLocaleDateString('pt-BR')}
+              </p>
+            </div>
+          ))}
+        </div>
       </main>
     </div>
   )
