@@ -19,8 +19,16 @@ function fotoCapa(obraId) {
 function ListaObras() {
   const [obras, setObras] = useState(obrasIniciais)
   const [confirmandoExclusao, setConfirmandoExclusao] = useState(null)
+  const [filtroStatus, setFiltroStatus] = useState(null)
 
   const obrasAtivas = obras.filter((obra) => obra.ativa)
+  const obrasFiltradas = filtroStatus
+    ? obrasAtivas.filter((obra) => obra.status === filtroStatus)
+    : obrasAtivas
+
+  function toggleFiltro(status) {
+    setFiltroStatus((atual) => (atual === status ? null : status))
+  }
 
   function handleExcluir(obraId) {
     setObras((lista) => lista.filter((obra) => obra.id !== obraId))
@@ -58,25 +66,61 @@ function ListaObras() {
           Cadastrar Nova Obra
         </button>
 
-        <div className="grid grid-cols-4 gap-3 mb-8">
+        <p className="text-xs text-lm-muted font-sans mb-2">Toque em um cartão para filtrar por status:</p>
+        <div className="grid grid-cols-4 gap-3 mb-6">
           {STATUS.map((status) => {
             const quantidade = obrasAtivas.filter((obra) => obra.status === status.chave).length
+            const ativo = filtroStatus === status.chave
 
             return (
-              <div key={status.chave} className="bg-white border border-lm-border px-2 py-4 text-center">
-                <p className="font-sans font-bold text-2xl text-lm-charcoal">{quantidade}</p>
-                <p className="font-sans text-xs uppercase tracking-wide text-lm-warm-gray mt-1">{status.label}</p>
-              </div>
+              <button
+                key={status.chave}
+                onClick={() => toggleFiltro(status.chave)}
+                className={`px-2 py-4 text-center border-2 transition-colors ${
+                  ativo
+                    ? 'border-lm-charcoal bg-lm-charcoal text-white'
+                    : 'border-lm-border bg-white hover:border-lm-charcoal text-lm-charcoal'
+                }`}
+              >
+                <p className="font-sans font-bold text-2xl">{quantidade}</p>
+                <p className={`font-sans text-xs uppercase tracking-wide mt-1 ${ativo ? 'text-white/80' : 'text-lm-warm-gray'}`}>
+                  {status.label}
+                </p>
+              </button>
             )
           })}
         </div>
 
+        {filtroStatus && (
+          <div className="flex items-center justify-between mb-6">
+            <p className="text-sm font-sans text-lm-warm-gray">
+              Mostrando apenas:{' '}
+              <span className="font-semibold text-lm-charcoal">
+                {STATUS.find((status) => status.chave === filtroStatus).label}
+              </span>
+            </p>
+            <button
+              onClick={() => setFiltroStatus(null)}
+              className="text-xs font-sans text-lm-warm-gray hover:text-lm-charcoal underline transition-colors"
+            >
+              Ver todas
+            </button>
+          </div>
+        )}
+
         <h2 className="font-sans font-semibold text-lm-charcoal text-base mb-4">
-          Obras em exibição ({obrasAtivas.length})
+          {filtroStatus
+            ? `${obrasFiltradas.length} obra${obrasFiltradas.length !== 1 ? 's' : ''} — ${STATUS.find((status) => status.chave === filtroStatus).label}`
+            : `Obras em exibição (${obrasAtivas.length})`}
         </h2>
 
         <div className="space-y-3">
-          {obrasAtivas.map((obra) => {
+          {obrasFiltradas.length === 0 && (
+            <div className="bg-white border border-lm-border p-8 text-center text-lm-muted font-sans text-sm">
+              Nenhuma obra com este status.
+            </div>
+          )}
+          {obrasFiltradas.map((obra) => {
             const nInteresses = interesses.filter((interesse) => interesse.obra_id === obra.id).length
 
             return (
