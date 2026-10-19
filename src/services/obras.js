@@ -1,0 +1,46 @@
+import { supabase } from "./supabase";
+import { obrasMock } from "./mockObras";
+
+const COLUNAS = "id, img:imagem_url, artista, tecnica, ano, tipo";
+const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+
+export async function listarObras(signal) {
+  if (!supabase) {
+    await espera(300);
+    return obrasMock;
+  }
+  const { data, error } = await supabase
+    .from("obras")
+    .select(COLUNAS)
+    .order("criado_em", { ascending: false })
+    .abortSignal(signal);
+  if (error) throw error;
+  return data;
+}
+
+export async function buscarObra(id, signal) {
+  if (!supabase) {
+    await espera(300);
+    const obra = obrasMock.find((o) => String(o.id) === String(id));
+    if (!obra) throw new Error("Obra não encontrada");
+    return obra;
+  }
+  const { data, error } = await supabase
+    .from("obras")
+    .select(COLUNAS)
+    .eq("id", id)
+    .abortSignal(signal)
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function enviarInteresse(dados) {
+  if (!supabase) {
+    await espera(500);
+    console.log("[modo exemplo] interesse que seria enviado:", dados);
+    return;
+  }
+  const { error } = await supabase.from("interesses").insert(dados);
+  if (error) throw error;
+}

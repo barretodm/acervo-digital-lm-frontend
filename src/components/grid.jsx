@@ -4,4 +4,6 @@ function GridContainer({ children }) {
       {children}
     </div>
   );
-} export default GridContainer
+}
+
+export default GridContainer
