@@ -15,6 +15,7 @@ import Detalhe from './components/obra_detalhes.jsx';
 import ListaObras from './pages/admin/ListaObras'
 import InteressesObra from './pages/admin/InteressesObra'
 import HistoricoObras from './pages/admin/HistoricoObras'
+import CadastroObra from './pages/admin/CadastroObra'
 
 function App() {
   return (
@@ -64,6 +65,7 @@ function App() {
           <Route path="/admin" element={<ListaObras />} />
           <Route path="/admin/interesses" element={<InteressesObra />} />
           <Route path="/admin/historico" element={<HistoricoObras />} />
+          <Route path="/admin/cadastro" element={<CadastroObra />} />
 
         </Routes>
 
