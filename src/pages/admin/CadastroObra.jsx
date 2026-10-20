@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import AdminHeader from '../../components/layout/AdminHeader'
+import AdminField from '../../components/common/AdminField'
 
 const PASSOS = [1, 2, 3]
 const TITULO_PASSO = {
@@ -8,12 +9,25 @@ const TITULO_PASSO = {
   3: 'Detalhes e valor',
 }
 
+const adminInputCls =
+  'w-full border border-lm-border bg-lm-ivory px-4 py-3.5 text-base font-sans text-lm-charcoal focus:outline-none focus:border-lm-charcoal transition-colors placeholder:text-lm-placeholder'
+
 function CadastroObra() {
   const [passo] = useState(1)
   const [fotosPreview] = useState([
     'https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=900&h=1100&fit=crop&auto=format',
   ])
   const [fotoCapaIdx, setFotoCapaIdx] = useState(0)
+  const [form, setForm] = useState({
+    artista: '',
+    tipo: 'quadro',
+    tecnica: '',
+    ano: '',
+  })
+
+  function set(campo) {
+    return (e) => setForm((f) => ({ ...f, [campo]: e.target.value }))
+  }
 
   function handleCancelar() {
     alert('cancelar (ainda nao implementado)')
@@ -90,6 +104,71 @@ function CadastroObra() {
                     </button>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {passo === 2 && (
+            <div>
+              <h2 className="font-sans font-semibold text-xl text-lm-charcoal mb-1">Informações da obra</h2>
+              <p className="text-sm text-lm-warm-gray font-sans mb-7 leading-relaxed">
+                Preencha os dados principais. Os campos com * são obrigatórios.
+              </p>
+
+              <div className="space-y-5">
+                <AdminField label="Nome do artista *">
+                  <input
+                    type="text"
+                    placeholder="Ex: Adriana Varejão"
+                    value={form.artista}
+                    onChange={set('artista')}
+                    className={adminInputCls}
+                  />
+                </AdminField>
+
+                <AdminField label="Tipo de obra *">
+                  <div className="flex gap-3">
+                    {[
+                      ['quadro', 'Quadro'],
+                      ['escultura', 'Escultura'],
+                    ].map(([val, label]) => (
+                      <button
+                        key={val}
+                        type="button"
+                        onClick={() => setForm((f) => ({ ...f, tipo: val }))}
+                        className={`flex-1 py-3.5 text-base font-sans font-medium border-2 transition-colors ${
+                          form.tipo === val
+                            ? 'border-lm-charcoal bg-lm-charcoal text-white'
+                            : 'border-lm-border text-lm-warm-gray hover:border-lm-charcoal'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </AdminField>
+
+                <AdminField label="Técnica *">
+                  <input
+                    type="text"
+                    placeholder="Ex: Óleo sobre tela"
+                    value={form.tecnica}
+                    onChange={set('tecnica')}
+                    className={adminInputCls}
+                  />
+                </AdminField>
+
+                <AdminField label="Ano *">
+                  <input
+                    type="number"
+                    placeholder="Ex: 2022"
+                    value={form.ano}
+                    onChange={set('ano')}
+                    className={adminInputCls}
+                    min={1900}
+                    max={2099}
+                  />
+                </AdminField>
               </div>
             </div>
           )}
