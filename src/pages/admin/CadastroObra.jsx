@@ -23,6 +23,9 @@ function CadastroObra() {
     tipo: 'quadro',
     tecnica: '',
     ano: '',
+    titulo: '',
+    valor: '',
+    descricao: '',
   })
 
   function set(campo) {
@@ -167,6 +170,47 @@ function CadastroObra() {
                     className={adminInputCls}
                     min={1900}
                     max={2099}
+                  />
+                </AdminField>
+              </div>
+            </div>
+          )}
+
+          {passo === 3 && (
+            <div>
+              <h2 className="font-sans font-semibold text-xl text-lm-charcoal mb-1">Detalhes e valor</h2>
+              <p className="text-sm text-lm-warm-gray font-sans mb-7 leading-relaxed">
+                Estes campos são opcionais — exceto o valor.
+              </p>
+
+              <div className="space-y-5">
+                <AdminField label="Título da obra (se houver)">
+                  <input
+                    type="text"
+                    placeholder="Deixe em branco se a obra não tiver título"
+                    value={form.titulo}
+                    onChange={set('titulo')}
+                    className={adminInputCls}
+                  />
+                </AdminField>
+
+                <AdminField label="Valor *">
+                  <input
+                    type="text"
+                    placeholder="Ex: R$ 20.000   ou   Sob consulta"
+                    value={form.valor}
+                    onChange={set('valor')}
+                    className={adminInputCls}
+                  />
+                </AdminField>
+
+                <AdminField label="Descrição (texto livre, opcional)">
+                  <textarea
+                    placeholder="Informações adicionais sobre a obra, contexto, série..."
+                    value={form.descricao}
+                    onChange={set('descricao')}
+                    rows={4}
+                    className={adminInputCls + ' resize-none'}
                   />
                 </AdminField>
               </div>
