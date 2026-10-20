@@ -13,7 +13,7 @@ const adminInputCls =
   'w-full border border-lm-border bg-lm-ivory px-4 py-3.5 text-base font-sans text-lm-charcoal focus:outline-none focus:border-lm-charcoal transition-colors placeholder:text-lm-placeholder'
 
 function CadastroObra() {
-  const [passo] = useState(1)
+  const [passo, setPasso] = useState(1)
   const [fotosPreview] = useState([
     'https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=900&h=1100&fit=crop&auto=format',
   ])
@@ -38,6 +38,10 @@ function CadastroObra() {
 
   function handleLogout() {
     alert('sair (ainda nao implementado)')
+  }
+
+  function handleSalvar() {
+    alert('salvar obra (ainda nao implementado)')
   }
 
   return (
@@ -215,6 +219,32 @@ function CadastroObra() {
                 </AdminField>
               </div>
             </div>
+          )}
+        </div>
+
+        <div className="flex gap-3 mt-6">
+          {passo > 1 && (
+            <button
+              onClick={() => setPasso((p) => p - 1)}
+              className="flex-1 border-2 border-lm-charcoal text-lm-charcoal font-sans font-semibold py-4 text-base hover:bg-lm-charcoal hover:text-white transition-colors"
+            >
+              ← Voltar
+            </button>
+          )}
+          {passo < 3 ? (
+            <button
+              onClick={() => setPasso((p) => p + 1)}
+              className="flex-1 bg-lm-charcoal text-white font-sans font-semibold py-4 text-base hover:bg-lm-charcoal-mid transition-colors"
+            >
+              Próximo →
+            </button>
+          ) : (
+            <button
+              onClick={handleSalvar}
+              className="flex-1 bg-emerald-700 text-white font-sans font-semibold py-4 text-base hover:bg-emerald-800 transition-colors"
+            >
+              ✓ Salvar obra
+            </button>
           )}
         </div>
       </main>
