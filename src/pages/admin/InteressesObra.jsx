@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { supabase } from '../../services/supabase'
 import AdminHeader from '../../components/layout/AdminHeader'
 import { obras as obrasIniciais } from '../../mocks/obras'
 import { interesses } from '../../mocks/interesses'
@@ -24,7 +25,8 @@ function InteressesObra() {
   }
 
   function handleLogout() {
-    alert('sair (ainda nao implementado)')
+    supabase?.auth.signOut()
+    navigate('/login')
   }
 
   if (!obra) return null

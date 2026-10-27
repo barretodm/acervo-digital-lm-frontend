@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { supabase } from '../../services/supabase'
 import AdminHeader from '../../components/layout/AdminHeader'
 import AdminField from '../../components/common/AdminField'
 
@@ -39,7 +40,8 @@ function CadastroObra() {
   }
 
   function handleLogout() {
-    alert('sair (ainda nao implementado)')
+    supabase?.auth.signOut()
+    navigate('/login')
   }
 
   function handleSalvar() {

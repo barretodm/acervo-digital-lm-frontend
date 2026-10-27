@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { supabase } from '../../services/supabase'
 import AdminHeader from '../../components/layout/AdminHeader'
 import StatusBadge from '../../components/common/StatusBadge'
 import { obras as obrasIniciais } from '../../mocks/obras'
@@ -23,7 +24,8 @@ function HistoricoObras() {
   }
 
   function handleLogout() {
-    alert('sair (ainda nao implementado)')
+    supabase?.auth.signOut()
+    navigate('/login')
   }
 
   return (
