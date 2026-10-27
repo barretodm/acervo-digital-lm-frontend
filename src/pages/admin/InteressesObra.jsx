@@ -1,27 +1,32 @@
 import { useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { supabase } from '../../services/supabase'
 import AdminHeader from '../../components/layout/AdminHeader'
 import { obras as obrasIniciais } from '../../mocks/obras'
 import { interesses } from '../../mocks/interesses'
 import { STATUS } from '../../constants/status'
-import { fotoCapa } from '../../utils/obras'
+import { fotoCapa, aplicarMudancaStatus } from '../../utils/obras'
 
-function InteressesObra({ obraId = 'c5494231-4efc-48b3-9466-bcb91ca5cbd9' }) {
+function InteressesObra() {
+  const { id: obraId } = useParams()
+  const navigate = useNavigate()
   const [obras, setObras] = useState(obrasIniciais)
   const obra = obras.find((item) => item.id === obraId)
   const interessesDaObra = interesses.filter((interesse) => interesse.obra_id === obraId)
 
   function handleStatusChange(novoStatus) {
     setObras((lista) =>
-      lista.map((item) => (item.id === obraId ? { ...item, status: novoStatus } : item))
+      lista.map((item) => (item.id === obraId ? aplicarMudancaStatus(item, novoStatus) : item))
     )
   }
 
   function handleBack() {
-    alert('voltar (ainda nao implementado)')
+    navigate('/admin')
   }
 
   function handleLogout() {
-    alert('sair (ainda nao implementado)')
+    supabase?.auth.signOut()
+    navigate('/login')
   }
 
   if (!obra) return null

@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { supabase } from '../../services/supabase'
 import AdminHeader from '../../components/layout/AdminHeader'
 import AdminField from '../../components/common/AdminField'
 
@@ -13,6 +15,7 @@ const adminInputCls =
   'w-full border border-lm-border bg-lm-ivory px-4 py-3.5 text-base font-sans text-lm-charcoal focus:outline-none focus:border-lm-charcoal transition-colors placeholder:text-lm-placeholder'
 
 function CadastroObra() {
+  const navigate = useNavigate()
   const [passo, setPasso] = useState(1)
   const [fotosPreview] = useState([
     'https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=900&h=1100&fit=crop&auto=format',
@@ -33,11 +36,12 @@ function CadastroObra() {
   }
 
   function handleCancelar() {
-    alert('cancelar (ainda nao implementado)')
+    navigate('/admin')
   }
 
   function handleLogout() {
-    alert('sair (ainda nao implementado)')
+    supabase?.auth.signOut()
+    navigate('/login')
   }
 
   function handleSalvar() {

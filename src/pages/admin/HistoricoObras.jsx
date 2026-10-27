@@ -1,10 +1,13 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { supabase } from '../../services/supabase'
 import AdminHeader from '../../components/layout/AdminHeader'
 import StatusBadge from '../../components/common/StatusBadge'
 import { obras as obrasIniciais } from '../../mocks/obras'
 import { fotoCapa } from '../../utils/obras'
 
 function HistoricoObras() {
+  const navigate = useNavigate()
   const [obras, setObras] = useState(obrasIniciais)
   const obrasInativas = obras.filter((obra) => !obra.ativa)
 
@@ -17,11 +20,12 @@ function HistoricoObras() {
   }
 
   function handleBack() {
-    alert('voltar (ainda nao implementado)')
+    navigate('/admin')
   }
 
   function handleLogout() {
-    alert('sair (ainda nao implementado)')
+    supabase?.auth.signOut()
+    navigate('/login')
   }
 
   return (

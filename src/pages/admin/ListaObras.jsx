@@ -1,12 +1,15 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { supabase } from '../../services/supabase'
 import AdminHeader from '../../components/layout/AdminHeader'
 import StatusBadge from '../../components/common/StatusBadge'
 import { obras as obrasIniciais } from '../../mocks/obras'
 import { interesses } from '../../mocks/interesses'
 import { STATUS, STATUS_RESUMO } from '../../constants/status'
-import { fotoCapa } from '../../utils/obras'
+import { fotoCapa, aplicarMudancaStatus } from '../../utils/obras'
 
 function ListaObras() {
+  const navigate = useNavigate()
   const [obras, setObras] = useState(obrasIniciais)
   const [confirmandoExclusao, setConfirmandoExclusao] = useState(null)
   const [filtroStatus, setFiltroStatus] = useState(null)
@@ -20,17 +23,24 @@ function ListaObras() {
     setFiltroStatus((atual) => (atual === status ? null : status))
   }
 
+  function handleStatusChange(obraId, novoStatus) {
+    setObras((lista) =>
+      lista.map((obra) => (obra.id === obraId ? aplicarMudancaStatus(obra, novoStatus) : obra))
+    )
+  }
+
   function handleExcluir(obraId) {
     setObras((lista) => lista.filter((obra) => obra.id !== obraId))
     setConfirmandoExclusao(null)
   }
 
   function handleLogout() {
-    alert('sair (ainda nao implementado)')
+    supabase?.auth.signOut()
+    navigate('/login')
   }
 
   function handleNovaObra() {
-    alert('cadastrar nova obra (ainda nao implementado)')
+    navigate('/admin/cadastro')
   }
 
   function handleEditar(obraId) {
@@ -38,11 +48,11 @@ function ListaObras() {
   }
 
   function handleInteresses(obraId) {
-    alert(`interesses da obra ${obraId} (ainda nao implementado)`)
+    navigate(`/admin/interesses/${obraId}`)
   }
 
   function handleHistorico() {
-    alert('historico de obras (ainda nao implementado)')
+    navigate('/admin/historico')
   }
 
   return (
@@ -140,7 +150,8 @@ function ListaObras() {
 
                 <div className="mt-3 flex flex-wrap gap-2 items-center">
                   <select
-                    defaultValue={obra.status}
+                    value={obra.status}
+                    onChange={(e) => handleStatusChange(obra.id, e.target.value)}
                     className="border border-lm-border text-xs text-lm-charcoal px-2 py-1.5 bg-lm-ivory focus:outline-none"
                   >
                     {STATUS.map((status) => (
