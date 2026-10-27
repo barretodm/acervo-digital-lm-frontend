@@ -4,7 +4,7 @@ import StatusBadge from '../../components/common/StatusBadge'
 import { obras as obrasIniciais } from '../../mocks/obras'
 import { interesses } from '../../mocks/interesses'
 import { STATUS, STATUS_RESUMO } from '../../constants/status'
-import { fotoCapa } from '../../utils/obras'
+import { fotoCapa, aplicarMudancaStatus } from '../../utils/obras'
 
 function ListaObras() {
   const [obras, setObras] = useState(obrasIniciais)
@@ -18,6 +18,12 @@ function ListaObras() {
 
   function toggleFiltro(status) {
     setFiltroStatus((atual) => (atual === status ? null : status))
+  }
+
+  function handleStatusChange(obraId, novoStatus) {
+    setObras((lista) =>
+      lista.map((obra) => (obra.id === obraId ? aplicarMudancaStatus(obra, novoStatus) : obra))
+    )
   }
 
   function handleExcluir(obraId) {
@@ -140,7 +146,8 @@ function ListaObras() {
 
                 <div className="mt-3 flex flex-wrap gap-2 items-center">
                   <select
-                    defaultValue={obra.status}
+                    value={obra.status}
+                    onChange={(e) => handleStatusChange(obra.id, e.target.value)}
                     className="border border-lm-border text-xs text-lm-charcoal px-2 py-1.5 bg-lm-ivory focus:outline-none"
                   >
                     {STATUS.map((status) => (
