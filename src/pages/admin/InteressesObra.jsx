@@ -3,7 +3,7 @@ import AdminHeader from '../../components/layout/AdminHeader'
 import { obras as obrasIniciais } from '../../mocks/obras'
 import { interesses } from '../../mocks/interesses'
 import { STATUS } from '../../constants/status'
-import { fotoCapa } from '../../utils/obras'
+import { fotoCapa, aplicarMudancaStatus } from '../../utils/obras'
 
 function InteressesObra({ obraId = 'c5494231-4efc-48b3-9466-bcb91ca5cbd9' }) {
   const [obras, setObras] = useState(obrasIniciais)
@@ -12,7 +12,7 @@ function InteressesObra({ obraId = 'c5494231-4efc-48b3-9466-bcb91ca5cbd9' }) {
 
   function handleStatusChange(novoStatus) {
     setObras((lista) =>
-      lista.map((item) => (item.id === obraId ? { ...item, status: novoStatus } : item))
+      lista.map((item) => (item.id === obraId ? aplicarMudancaStatus(item, novoStatus) : item))
     )
   }
 
