@@ -15,6 +15,9 @@ import Detalhe from './components/obra_detalhes.jsx';
 import Filtro from './components/filtro.jsx';
 import Form from './pages/public/form.jsx';
 import Administrador from './pages/admin/ListaObras.jsx';
+import InteressesObra from './pages/admin/InteressesObra.jsx';
+import HistoricoObras from './pages/admin/HistoricoObras.jsx';
+import CadastroObra from './pages/admin/CadastroObra.jsx';
 
 import logo from './assets/logo-lm-v3.png';
 
@@ -111,26 +114,6 @@ function RotaProtegida({ children }) {
   return sessao ? children : <Navigate to="/login" replace />;
 }
 
-// Página provisória do galerista. Substitua pela página real de interesses/obras.
-function Admin() {
-  return (
-    <div className="flex min-h-screen flex-col">
-      <Header img={logo} />
-      <Main>
-        <h1 className="text-2xl font-serif mb-4">Área do galerista</h1>
-        <button
-          type="button"
-          onClick={() => supabase?.auth.signOut()}
-          className="p-3 bg-[#1C1B18] text-white text-sm"
-        >
-          Sair
-        </button>
-      </Main>
-      <Footer img={logo} />
-    </div>
-  );
-}
-
 function App() {
   return (
     <Routes>
@@ -150,6 +133,30 @@ function App() {
         element={
           <RotaProtegida>
             <Administrador />
+          </RotaProtegida>
+        }
+      />
+      <Route
+        path="/admin/interesses/:id"
+        element={
+          <RotaProtegida>
+            <InteressesObra />
+          </RotaProtegida>
+        }
+      />
+      <Route
+        path="/admin/historico"
+        element={
+          <RotaProtegida>
+            <HistoricoObras />
+          </RotaProtegida>
+        }
+      />
+      <Route
+        path="/admin/cadastro"
+        element={
+          <RotaProtegida>
+            <CadastroObra />
           </RotaProtegida>
         }
       />
