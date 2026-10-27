@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import AdminHeader from '../../components/layout/AdminHeader'
 import StatusBadge from '../../components/common/StatusBadge'
 import { obras as obrasIniciais } from '../../mocks/obras'
@@ -7,6 +8,7 @@ import { STATUS, STATUS_RESUMO } from '../../constants/status'
 import { fotoCapa, aplicarMudancaStatus } from '../../utils/obras'
 
 function ListaObras() {
+  const navigate = useNavigate()
   const [obras, setObras] = useState(obrasIniciais)
   const [confirmandoExclusao, setConfirmandoExclusao] = useState(null)
   const [filtroStatus, setFiltroStatus] = useState(null)
@@ -36,7 +38,7 @@ function ListaObras() {
   }
 
   function handleNovaObra() {
-    alert('cadastrar nova obra (ainda nao implementado)')
+    navigate('/admin/cadastro')
   }
 
   function handleEditar(obraId) {
@@ -44,11 +46,11 @@ function ListaObras() {
   }
 
   function handleInteresses(obraId) {
-    alert(`interesses da obra ${obraId} (ainda nao implementado)`)
+    navigate(`/admin/interesses/${obraId}`)
   }
 
   function handleHistorico() {
-    alert('historico de obras (ainda nao implementado)')
+    navigate('/admin/historico')
   }
 
   return (
