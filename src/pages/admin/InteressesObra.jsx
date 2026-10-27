@@ -1,11 +1,13 @@
 import { useState } from 'react'
+import { useParams } from 'react-router-dom'
 import AdminHeader from '../../components/layout/AdminHeader'
 import { obras as obrasIniciais } from '../../mocks/obras'
 import { interesses } from '../../mocks/interesses'
 import { STATUS } from '../../constants/status'
 import { fotoCapa, aplicarMudancaStatus } from '../../utils/obras'
 
-function InteressesObra({ obraId = 'c5494231-4efc-48b3-9466-bcb91ca5cbd9' }) {
+function InteressesObra() {
+  const { id: obraId } = useParams()
   const [obras, setObras] = useState(obrasIniciais)
   const obra = obras.find((item) => item.id === obraId)
   const interessesDaObra = interesses.filter((interesse) => interesse.obra_id === obraId)
