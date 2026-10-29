@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { supabase } from "../../services/supabase";
 import logo from "../../assets/logo-lm-v3.png";
+import Back from "../../assets/back.png";
 
 function Login() {
   const navigate = useNavigate();
@@ -28,6 +29,10 @@ function Login() {
 
   return (
     <div className="flex flex-col gap-4">
+      <Link to="/" className="flex items-center justify-center gap-2">
+        <img src={Back} alt="" />
+        <span className="text-sm text-lm-warm-gray">Voltar à página principal</span>
+      </Link>
       <div className="w-max mx-auto">
         <img src={logo} alt="LM Escritório de Arte" className="h-18 w-auto" />
       </div>
@@ -74,9 +79,6 @@ function Login() {
             {entrando ? "Entrando..." : "Entrar"}
           </button>
         </form>
-        <div>
-          <Link to="/">Retornar à página principal</Link>
-        </div>
       </div>
     </div>
   );
