@@ -1,8 +1,8 @@
-import whats from '../assets/whatsapp_icon.png'
+import whats from "../../assets/whatsapp_icon.png";
 
 function Footer({ img }) {
   return (
-    <footer className="text-[rgb(160,152,144)] bg-[#1C1B18] pt-10 pb-3 text-sm">
+    <footer className="text-lm-muted bg-lm-charcoal pt-10 pb-3 text-sm">
       <div className="container mx-auto px-10 md:px-20 lg:px-30">
         <div className="flex flex-col gap-6 md:flex-row md:justify-between">
           <div className="flex flex-col pb-10">
@@ -31,7 +31,7 @@ function Footer({ img }) {
         </p>
       </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;

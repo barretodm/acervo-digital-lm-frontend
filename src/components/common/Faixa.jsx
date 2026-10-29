@@ -6,7 +6,7 @@ function Faixa() {
         <p>Obras disponíveis na galeria. Para manifestar interesse, acesse cada obra.</p>
       </div>
     </div>
-  )
+  );
 }
 
-export default Faixa
+export default Faixa;
