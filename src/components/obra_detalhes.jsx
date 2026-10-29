@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import StatusBadge from "./common/StatusBadge";
 import Back from "../assets/back.png";
 import whatsVerde from "../assets/whatsapp-verde.png";
 
-function Detalhe({ id, img, artista, tecnica, ano, tipo, status, titulo, valor, descricao }) {
+function Detalhe({ id, img, fotos, artista, tecnica, ano, tipo, status, titulo, valor, descricao }) {
+  const galeria = fotos && fotos.length > 0 ? fotos : [img];
+  const [fotoIdx, setFotoIdx] = useState(0);
   const tipoLabel = tipo === "quadro" ? "Quadro" : "Escultura";
   const specs = [
     ["Técnica", tecnica],
@@ -20,11 +23,28 @@ function Detalhe({ id, img, artista, tecnica, ano, tipo, status, titulo, valor, 
       </Link>
 
       <div className="flex flex-col md:flex-row gap-8 md:gap-15">
-        <img
-          src={img}
-          alt={`${artista}, ${tecnica}`}
-          className="w-full md:w-auto md:h-150 object-contain"
-        />
+        <div>
+          <img
+            src={galeria[fotoIdx]}
+            alt={`${artista}, ${tecnica}`}
+            className="w-full md:w-auto md:h-150 object-contain"
+          />
+          {galeria.length > 1 && (
+            <div className="flex gap-2 mt-3">
+              {galeria.map((foto, i) => (
+                <button
+                  key={foto}
+                  onClick={() => setFotoIdx(i)}
+                  className={`w-16 h-16 overflow-hidden bg-lm-image-bg transition-all ${
+                    i === fotoIdx ? "ring-2 ring-lm-charcoal" : "opacity-60 hover:opacity-100"
+                  }`}
+                >
+                  <img src={foto} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
 
         <div className="flex-1 flex flex-col justify-between gap-8">
           <div className="flex flex-col gap-5">

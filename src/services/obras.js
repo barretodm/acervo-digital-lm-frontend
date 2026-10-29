@@ -1,6 +1,6 @@
 import { supabase } from "./supabase";
 import { obras as obrasMock } from "../mocks/obras";
-import { fotoCapa } from "../utils/obras";
+import { fotoCapa, fotosDaObra } from "../utils/obras";
 
 const COLUNAS =
   "id, img:imagem_url, artista, tecnica, ano, tipo, status, titulo, valor, descricao";
@@ -10,6 +10,7 @@ function paraObraPublica(obra) {
   return {
     ...obra,
     img: fotoCapa(obra.id),
+    fotos: fotosDaObra(obra.id),
   };
 }
 
