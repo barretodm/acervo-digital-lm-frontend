@@ -1,4 +1,4 @@
-import whats from "../assets/whatsapp_icon.png";
+import whats from "../../assets/whatsapp_icon.png";
 
 function Footer({ img }) {
   return (

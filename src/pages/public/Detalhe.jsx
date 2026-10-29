@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import StatusBadge from "./common/StatusBadge";
-import Back from "../assets/back.png";
-import whatsVerde from "../assets/whatsapp-verde.png";
+import StatusBadge from "../../components/common/StatusBadge";
+import Back from "../../assets/back.png";
+import whatsVerde from "../../assets/whatsapp-verde.png";
 
 function Detalhe({
   id,

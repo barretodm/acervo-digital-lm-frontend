@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import Footer from "../../components/footer";
-import Header from "../../components/header";
-import Main from "../../components/main";
+import Footer from "../../components/layout/Footer";
+import Header from "../../components/layout/Header";
+import Main from "../../components/layout/Main";
 import logo from "../../assets/logo-lm-v3.png";
 import Backarrow from "../../assets/back.png";
 import { enviarInteresse } from "../../services/obras";
