@@ -8,6 +8,7 @@ function Detalhe({ id, img, fotos, artista, tecnica, ano, tipo, status, titulo, 
   const galeria = fotos && fotos.length > 0 ? fotos : [img];
   const [fotoIdx, setFotoIdx] = useState(0);
   const tipoLabel = tipo === "quadro" ? "Quadro" : "Escultura";
+  const podeManifestarInteresse = status === "aberto" || status === "em_conversa";
   const specs = [
     ["Técnica", tecnica],
     ["Ano", ano],
@@ -72,16 +73,24 @@ function Detalhe({ id, img, fotos, artista, tecnica, ano, tipo, status, titulo, 
 
           <div>
             <div className="flex flex-col gap-3 border-b border-b-lm-border pb-6">
-              <Link
-                to={`/form/${id}`}
-                className="block bg-lm-red/90 text-white p-4 text-center hover:bg-lm-red"
-              >
-                Tenho interesse
-              </Link>
-              <p className="text-xs text-center">
-                Ao clicar, você será convidado a preencher um breve formulário. Suas informações serão
-                enviadas diretamente para a galeria, que entrará em contato para dar continuidade.
-              </p>
+              {podeManifestarInteresse ? (
+                <>
+                  <Link
+                    to={`/form/${id}`}
+                    className="block bg-lm-red/90 text-white p-4 text-center hover:bg-lm-red"
+                  >
+                    Tenho interesse
+                  </Link>
+                  <p className="text-xs text-center">
+                    Ao clicar, você será convidado a preencher um breve formulário. Suas informações serão
+                    enviadas diretamente para a galeria, que entrará em contato para dar continuidade.
+                  </p>
+                </>
+              ) : (
+                <p className="bg-lm-admin-bg border border-lm-border text-lm-warm-gray text-sm p-4 text-center">
+                  Esta obra não está disponível para manifestação de interesse no momento.
+                </p>
+              )}
             </div>
             <div className="pt-5 flex flex-col gap-4">
               <p className="text-center text-xs">Prefere falar diretamente?</p>
