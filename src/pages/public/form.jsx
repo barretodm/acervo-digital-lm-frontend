@@ -27,7 +27,7 @@ function Form({ obra }) {
         email: f.get("email"),
         telefone: f.get("telefone"),
         mensagem: f.get("mensagem") || null,
-        aceite_lgpd: f.get("lgpd") === "on",
+        consentimento_lgpd: f.get("lgpd") === "on",
       });
       setEnviado(true);
     } catch {
