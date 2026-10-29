@@ -1,15 +1,22 @@
-import { Link } from "react-router-dom"
-import Back from '../assets/back.png'
-import whatsVerde from '../assets/whatsapp-verde.png'
+import { Link } from "react-router-dom";
+import StatusBadge from "./common/StatusBadge";
+import Back from "../assets/back.png";
+import whatsVerde from "../assets/whatsapp-verde.png";
 
-function Detalhe({ id, img, artista, tecnica, ano, tipo }) {
-  const specs = [["Técnica", tecnica], ["Ano", ano], ["Tipo", tipo]];
+function Detalhe({ id, img, artista, tecnica, ano, tipo, status, titulo, valor, descricao }) {
+  const tipoLabel = tipo === "quadro" ? "Quadro" : "Escultura";
+  const specs = [
+    ["Técnica", tecnica],
+    ["Ano", ano],
+    ["Tipo", tipoLabel],
+    ...(valor ? [["Valor", valor]] : []),
+  ];
 
   return (
     <div className="flex flex-col gap-5">
       <Link to="/" className="flex items-center gap-2">
         <img src={Back} alt="" />
-        <span className="text-sm text-[#6b6460]">Voltar ao acervo</span>
+        <span className="text-sm text-lm-warm-gray">Voltar ao acervo</span>
       </Link>
 
       <div className="flex flex-col md:flex-row gap-8 md:gap-15">
@@ -21,22 +28,33 @@ function Detalhe({ id, img, artista, tecnica, ano, tipo }) {
 
         <div className="flex-1 flex flex-col justify-between gap-8">
           <div className="flex flex-col gap-5">
-            <h1 className="font-serif font-medium text-3xl border-b border-b-[#E0DBD4] pb-5">{artista}</h1>
-            <div className="flex flex-col gap-3 border-b border-b-[#E0DBD4] pb-5">
-              {specs.map(([label, valor]) => (
+            <div className="flex flex-col gap-2">
+              <StatusBadge status={status} />
+              <h1 className="font-serif font-medium text-3xl border-b border-b-lm-border pb-5">
+                {artista}
+              </h1>
+              {titulo && <p className="italic text-sm text-lm-warm-gray">{titulo}</p>}
+            </div>
+
+            <div className="flex flex-col gap-3 border-b border-b-lm-border pb-5">
+              {specs.map(([label, info]) => (
                 <div key={label} className="flex items-center justify-between">
-                  <h4 className="uppercase text-xs text-[#6D6662]">{label}</h4>
-                  <p className="text-xs">{valor}</p>
+                  <h4 className="uppercase text-xs text-lm-warm-gray">{label}</h4>
+                  <p className="text-xs">{info}</p>
                 </div>
               ))}
             </div>
+
+            {descricao && (
+              <p className="text-sm text-lm-warm-gray leading-relaxed">{descricao}</p>
+            )}
           </div>
 
           <div>
-            <div className="flex flex-col gap-3 border-b border-b-[#E0DBD4] pb-6">
+            <div className="flex flex-col gap-3 border-b border-b-lm-border pb-6">
               <Link
                 to={`/form/${id}`}
-                className="block bg-[#C41230]/90 text-white p-4 text-center hover:bg-[#C41230]"
+                className="block bg-lm-red/90 text-white p-4 text-center hover:bg-lm-red"
               >
                 Tenho interesse
               </Link>
@@ -49,7 +67,9 @@ function Detalhe({ id, img, artista, tecnica, ano, tipo }) {
               <p className="text-center text-xs">Prefere falar diretamente?</p>
               <a
                 className="block border border-emerald-400 hover:bg-emerald-400/10"
-                href="https://wa.me/5511999999999" target="_blank" rel="noreferrer"
+                href="https://wa.me/5511999999999"
+                target="_blank"
+                rel="noreferrer"
               >
                 <div className="flex items-center justify-center p-4 gap-2">
                   <img src={whatsVerde} alt="" />
@@ -61,7 +81,7 @@ function Detalhe({ id, img, artista, tecnica, ano, tipo }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default Detalhe
+export default Detalhe;
