@@ -44,12 +44,16 @@ export async function buscarObra(id, signal) {
   return data;
 }
 
-export async function enviarInteresse(dados) {
+export async function listarTodasObras(signal) {
   if (!supabase) {
-    await espera(500);
-    console.log("[modo exemplo] interesse que seria enviado:", dados);
-    return;
+    await espera(300);
+    return obrasMock.map(paraObraPublica);
   }
-  const { error } = await supabase.from("interesses").insert(dados);
+  const { data, error } = await supabase
+    .from("obras")
+    .select(COLUNAS)
+    .order("criado_em", { ascending: false })
+    .abortSignal(signal);
   if (error) throw error;
+  return data;
 }

@@ -5,7 +5,7 @@ import Header from "../../components/layout/Header";
 import Main from "../../components/layout/Main";
 import logo from "../../assets/logo-lm-v3.png";
 import Backarrow from "../../assets/back.png";
-import { enviarInteresse } from "../../services/obras";
+import { enviarInteresse } from "../../services/interesses";
 
 const inputCls = "bg-white p-3 mb-4";
 const labelCls = "text-xs uppercase mb-1";
@@ -123,9 +123,7 @@ function Form({ obra }) {
                 </span>
               </label>
 
-              {erro && (
-                <p className="text-sm text-lm-red mb-3">Erro ao enviar. Tente novamente.</p>
-              )}
+              {erro && <p className="text-sm text-lm-red mb-3">Erro ao enviar. Tente novamente.</p>}
 
               <button
                 type="submit"

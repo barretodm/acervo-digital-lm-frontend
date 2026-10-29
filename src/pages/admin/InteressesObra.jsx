@@ -1,18 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../services/supabase";
 import AdminHeader from "../../components/layout/AdminHeader";
-import { obras as obrasIniciais } from "../../mocks/obras";
-import { interesses } from "../../mocks/interesses";
+import Aviso from "../../components/common/Aviso";
+import { useTodasObras } from "../../hooks/useObras";
+import { useInteresses } from "../../hooks/useInteresses";
 import { STATUS } from "../../constants/status";
-import { fotoCapa, aplicarMudancaStatus } from "../../utils/obras";
+import { aplicarMudancaStatus } from "../../utils/obras";
 
 function InteressesObra() {
   const { id: obraId } = useParams();
   const navigate = useNavigate();
-  const [obras, setObras] = useState(obrasIniciais);
+  const { data: obrasObtidas, loading, error } = useTodasObras();
+  const { data: interessesDaObra } = useInteresses(obraId);
+  const [obras, setObras] = useState([]);
+
+  useEffect(() => {
+    // copia local editavel, iniciada so quando o fetch resolve
+    // oxlint-disable-next-line react/set-state-in-effect
+    if (obrasObtidas) setObras(obrasObtidas);
+  }, [obrasObtidas]);
+
   const obra = obras.find((item) => item.id === obraId);
-  const interessesDaObra = interesses.filter((interesse) => interesse.obra_id === obraId);
 
   function handleStatusChange(novoStatus) {
     setObras((lista) =>
@@ -29,7 +38,10 @@ function InteressesObra() {
     navigate("/login");
   }
 
-  if (!obra) return null;
+  const listaInteresses = interessesDaObra ?? [];
+
+  if (loading) return <Aviso>Carregando...</Aviso>;
+  if (error || !obra) return null;
 
   return (
     <div className="min-h-screen bg-lm-admin-bg flex flex-col">
@@ -38,7 +50,7 @@ function InteressesObra() {
       <main className="max-w-3xl mx-auto w-full px-5 py-8 flex-1">
         <div className="bg-white border border-lm-border p-4 flex gap-4 items-center mb-6">
           <img
-            src={fotoCapa(obra.id)}
+            src={obra.img}
             alt={obra.artista}
             className="w-14 h-18 object-cover bg-lm-image-bg flex-shrink-0"
           />
@@ -68,13 +80,13 @@ function InteressesObra() {
         </div>
 
         <h2 className="font-sans font-semibold text-lm-charcoal text-base mb-4">
-          {interessesDaObra.length === 0
+          {listaInteresses.length === 0
             ? "Nenhum interesse recebido"
-            : `${interessesDaObra.length} interesse${interessesDaObra.length > 1 ? "s" : ""} recebido${interessesDaObra.length > 1 ? "s" : ""}`}
+            : `${listaInteresses.length} interesse${listaInteresses.length > 1 ? "s" : ""} recebido${listaInteresses.length > 1 ? "s" : ""}`}
         </h2>
 
         <div className="space-y-3">
-          {interessesDaObra.map((interesse) => (
+          {listaInteresses.map((interesse) => (
             <div key={interesse.id} className="bg-white border border-lm-border p-5">
               <p className="font-sans font-semibold text-lm-charcoal text-base">{interesse.nome}</p>
               <p className="text-xs text-lm-muted font-sans mt-0.5">

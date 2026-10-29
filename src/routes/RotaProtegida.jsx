@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { supabase } from "../services/supabase";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 import Aviso from "../components/common/Aviso";
 
 function RotaProtegida({ children }) {
