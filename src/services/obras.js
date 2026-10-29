@@ -2,8 +2,7 @@ import { supabase } from "./supabase";
 import { obras as obrasMock } from "../mocks/obras";
 import { fotoCapa, fotosDaObra } from "../utils/obras";
 
-const COLUNAS =
-  "id, img:imagem_url, artista, tecnica, ano, tipo, status, titulo, valor, descricao";
+const COLUNAS = "id, img:imagem_url, artista, tecnica, ano, tipo, status, titulo, valor, descricao";
 const espera = (ms) => new Promise((r) => setTimeout(r, ms));
 
 function paraObraPublica(obra) {

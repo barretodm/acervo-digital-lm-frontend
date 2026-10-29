@@ -1,41 +1,39 @@
-import { useEffect, useState } from 'react';
-import { Routes, Route, useParams, Navigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Routes, Route, useParams, Navigate } from "react-router-dom";
 
-import { supabase } from './services/supabase';
-import { useObras, useObra } from './hooks/useObras';
+import { supabase } from "./services/supabase";
+import { useObras, useObra } from "./hooks/useObras";
 
-import Header from './components/header.jsx';
-import Main from './components/main.jsx';
-import GridContainer from './components/grid.jsx';
-import Footer from './components/footer.jsx';
-import Card from './components/card.jsx';
-import Login from './components/login_card.jsx';
-import Faixa from './components/faixa_titulo.jsx';
-import Detalhe from './components/obra_detalhes.jsx';
-import Filtro from './components/filtro.jsx';
-import Form from './pages/public/form.jsx';
-import Administrador from './pages/admin/ListaObras.jsx';
-import InteressesObra from './pages/admin/InteressesObra.jsx';
-import HistoricoObras from './pages/admin/HistoricoObras.jsx';
-import CadastroObra from './pages/admin/CadastroObra.jsx';
+import Header from "./components/header.jsx";
+import Main from "./components/main.jsx";
+import GridContainer from "./components/grid.jsx";
+import Footer from "./components/footer.jsx";
+import Card from "./components/card.jsx";
+import Login from "./components/login_card.jsx";
+import Faixa from "./components/faixa_titulo.jsx";
+import Detalhe from "./components/obra_detalhes.jsx";
+import Filtro from "./components/filtro.jsx";
+import Form from "./pages/public/form.jsx";
+import Administrador from "./pages/admin/ListaObras.jsx";
+import InteressesObra from "./pages/admin/InteressesObra.jsx";
+import HistoricoObras from "./pages/admin/HistoricoObras.jsx";
+import CadastroObra from "./pages/admin/CadastroObra.jsx";
 
-import logo from './assets/logo-lm-v3.png';
+import logo from "./assets/logo-lm-v3.png";
 
 function Aviso({ children }) {
-  return <p className="py-10 text-center text-sm text-[#6B6460]">{children}</p>;
+  return <p className="py-10 text-center text-sm text-lm-warm-gray">{children}</p>;
 }
 
 function Home() {
   const { data: obras, loading, error } = useObras();
-  const [tipo, setTipo] = useState('todos');
-  const [tecnica, setTecnica] = useState('');
+  const [tipo, setTipo] = useState("todos");
+  const [tecnica, setTecnica] = useState("");
 
   const lista = obras ?? [];
   const tecnicas = [...new Set(lista.map((o) => o.tecnica))];
   const filtradas = lista.filter(
-    (o) =>
-      (tipo === 'todos' || o.tipo === tipo) &&
-      (tecnica === '' || o.tecnica === tecnica),
+    (o) => (tipo === "todos" || o.tipo === tipo) && (tecnica === "" || o.tecnica === tecnica),
   );
 
   return (
@@ -52,12 +50,8 @@ function Home() {
           tecnicas={tecnicas}
         />
         {loading && <Aviso>Carregando obras...</Aviso>}
-        {error && (
-          <Aviso>Não foi possível carregar as obras. Tente novamente.</Aviso>
-        )}
-        {!loading && !error && filtradas.length === 0 && (
-          <Aviso>Nenhuma obra encontrada.</Aviso>
-        )}
+        {error && <Aviso>Não foi possível carregar as obras. Tente novamente.</Aviso>}
+        {!loading && !error && filtradas.length === 0 && <Aviso>Nenhuma obra encontrada.</Aviso>}
         <GridContainer>
           {filtradas.map((o) => (
             <Card key={o.id} {...o} />
@@ -100,15 +94,12 @@ function RotaProtegida({ children }) {
   useEffect(() => {
     if (!supabase) return;
     supabase.auth.getSession().then(({ data }) => setSessao(data.session));
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) =>
-      setSessao(s),
-    );
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => setSessao(s));
     return () => sub.subscription.unsubscribe();
   }, []);
 
   // sem banco: libera o /admin só durante o desenvolvimento
-  if (!supabase)
-    return import.meta.env.DEV ? children : <Navigate to="/login" replace />;
+  if (!supabase) return import.meta.env.DEV ? children : <Navigate to="/login" replace />;
 
   if (sessao === undefined) return <Aviso>Carregando...</Aviso>;
   return sessao ? children : <Navigate to="/login" replace />;
@@ -123,7 +114,7 @@ function App() {
       <Route
         path="/login"
         element={
-          <div className="flex min-h-screen items-center justify-center bg-[#F5F3EF] p-4">
+          <div className="flex min-h-screen items-center justify-center bg-lm-ivory p-4">
             <Login />
           </div>
         }

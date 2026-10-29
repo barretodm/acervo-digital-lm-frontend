@@ -1,58 +1,58 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { supabase } from '../../services/supabase'
-import AdminHeader from '../../components/layout/AdminHeader'
-import StatusBadge from '../../components/common/StatusBadge'
-import { obras as obrasIniciais } from '../../mocks/obras'
-import { interesses } from '../../mocks/interesses'
-import { STATUS, STATUS_RESUMO } from '../../constants/status'
-import { fotoCapa, aplicarMudancaStatus } from '../../utils/obras'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../../services/supabase";
+import AdminHeader from "../../components/layout/AdminHeader";
+import StatusBadge from "../../components/common/StatusBadge";
+import { obras as obrasIniciais } from "../../mocks/obras";
+import { interesses } from "../../mocks/interesses";
+import { STATUS, STATUS_RESUMO } from "../../constants/status";
+import { fotoCapa, aplicarMudancaStatus } from "../../utils/obras";
 
 function ListaObras() {
-  const navigate = useNavigate()
-  const [obras, setObras] = useState(obrasIniciais)
-  const [confirmandoExclusao, setConfirmandoExclusao] = useState(null)
-  const [filtroStatus, setFiltroStatus] = useState(null)
+  const navigate = useNavigate();
+  const [obras, setObras] = useState(obrasIniciais);
+  const [confirmandoExclusao, setConfirmandoExclusao] = useState(null);
+  const [filtroStatus, setFiltroStatus] = useState(null);
 
-  const obrasAtivas = obras.filter((obra) => obra.ativa)
+  const obrasAtivas = obras.filter((obra) => obra.ativa);
   const obrasFiltradas = filtroStatus
     ? obrasAtivas.filter((obra) => obra.status === filtroStatus)
-    : obrasAtivas
+    : obrasAtivas;
 
   function toggleFiltro(status) {
-    setFiltroStatus((atual) => (atual === status ? null : status))
+    setFiltroStatus((atual) => (atual === status ? null : status));
   }
 
   function handleStatusChange(obraId, novoStatus) {
     setObras((lista) =>
-      lista.map((obra) => (obra.id === obraId ? aplicarMudancaStatus(obra, novoStatus) : obra))
-    )
+      lista.map((obra) => (obra.id === obraId ? aplicarMudancaStatus(obra, novoStatus) : obra)),
+    );
   }
 
   function handleExcluir(obraId) {
-    setObras((lista) => lista.filter((obra) => obra.id !== obraId))
-    setConfirmandoExclusao(null)
+    setObras((lista) => lista.filter((obra) => obra.id !== obraId));
+    setConfirmandoExclusao(null);
   }
 
   function handleLogout() {
-    supabase?.auth.signOut()
-    navigate('/login')
+    supabase?.auth.signOut();
+    navigate("/login");
   }
 
   function handleNovaObra() {
-    navigate('/admin/cadastro')
+    navigate("/admin/cadastro");
   }
 
   function handleEditar(obraId) {
-    alert(`editar obra ${obraId} (ainda nao implementado)`)
+    alert(`editar obra ${obraId} (ainda nao implementado)`);
   }
 
   function handleInteresses(obraId) {
-    navigate(`/admin/interesses/${obraId}`)
+    navigate(`/admin/interesses/${obraId}`);
   }
 
   function handleHistorico() {
-    navigate('/admin/historico')
+    navigate("/admin/historico");
   }
 
   return (
@@ -64,17 +64,25 @@ function ListaObras() {
           onClick={handleNovaObra}
           className="w-full bg-lm-red text-white font-sans font-semibold py-5 text-lg hover:bg-lm-red-dark transition-colors flex items-center justify-center gap-3 mb-8"
         >
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
           Cadastrar Nova Obra
         </button>
 
-        <p className="text-xs text-lm-muted font-sans mb-2">Toque em um cartão para filtrar por status:</p>
+        <p className="text-xs text-lm-muted font-sans mb-2">
+          Toque em um cartão para filtrar por status:
+        </p>
         <div className="grid grid-cols-3 gap-3 mb-6">
           {STATUS_RESUMO.map((status) => {
-            const quantidade = obrasAtivas.filter((obra) => obra.status === status.chave).length
-            const ativo = filtroStatus === status.chave
+            const quantidade = obrasAtivas.filter((obra) => obra.status === status.chave).length;
+            const ativo = filtroStatus === status.chave;
 
             return (
               <button
@@ -82,23 +90,25 @@ function ListaObras() {
                 onClick={() => toggleFiltro(status.chave)}
                 className={`px-2 py-4 text-center border-2 transition-colors ${
                   ativo
-                    ? 'border-lm-charcoal bg-lm-charcoal text-white'
-                    : 'border-lm-border bg-white hover:border-lm-charcoal text-lm-charcoal'
+                    ? "border-lm-charcoal bg-lm-charcoal text-white"
+                    : "border-lm-border bg-white hover:border-lm-charcoal text-lm-charcoal"
                 }`}
               >
                 <p className="font-sans font-bold text-2xl">{quantidade}</p>
-                <p className={`font-sans text-xs uppercase tracking-wide mt-1 ${ativo ? 'text-white/80' : 'text-lm-warm-gray'}`}>
+                <p
+                  className={`font-sans text-xs uppercase tracking-wide mt-1 ${ativo ? "text-white/80" : "text-lm-warm-gray"}`}
+                >
                   {status.label}
                 </p>
               </button>
-            )
+            );
           })}
         </div>
 
         {filtroStatus && (
           <div className="flex items-center justify-between mb-6">
             <p className="text-sm font-sans text-lm-warm-gray">
-              Mostrando apenas:{' '}
+              Mostrando apenas:{" "}
               <span className="font-semibold text-lm-charcoal">
                 {STATUS.find((status) => status.chave === filtroStatus).label}
               </span>
@@ -114,7 +124,7 @@ function ListaObras() {
 
         <h2 className="font-sans font-semibold text-lm-charcoal text-base mb-4">
           {filtroStatus
-            ? `${obrasFiltradas.length} obra${obrasFiltradas.length !== 1 ? 's' : ''} — ${STATUS.find((status) => status.chave === filtroStatus).label}`
+            ? `${obrasFiltradas.length} obra${obrasFiltradas.length !== 1 ? "s" : ""} — ${STATUS.find((status) => status.chave === filtroStatus).label}`
             : `Obras em exibição (${obrasAtivas.length})`}
         </h2>
 
@@ -125,90 +135,99 @@ function ListaObras() {
             </div>
           )}
           {obrasFiltradas.map((obra) => {
-            const nInteresses = interesses.filter((interesse) => interesse.obra_id === obra.id).length
+            const nInteresses = interesses.filter(
+              (interesse) => interesse.obra_id === obra.id,
+            ).length;
 
             return (
-            <div key={obra.id} className="bg-white border border-lm-border p-4 flex gap-4 items-start">
-              <img
-                src={fotoCapa(obra.id)}
-                alt={obra.artista}
-                className="w-16 h-20 object-cover bg-lm-image-bg flex-shrink-0"
-              />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2 flex-wrap">
-                  <div>
-                    <p className="font-sans font-semibold text-lm-charcoal text-base">{obra.artista}</p>
-                    {obra.titulo && (
-                      <p className="font-sans text-sm text-lm-warm-gray italic">{obra.titulo}</p>
-                    )}
-                    <p className="font-sans text-xs text-lm-muted mt-0.5">
-                      {obra.tecnica} · {obra.ano}
-                    </p>
-                  </div>
-                  <StatusBadge status={obra.status} />
-                </div>
-
-                <div className="mt-3 flex flex-wrap gap-2 items-center">
-                  <select
-                    value={obra.status}
-                    onChange={(e) => handleStatusChange(obra.id, e.target.value)}
-                    className="border border-lm-border text-xs text-lm-charcoal px-2 py-1.5 bg-lm-ivory focus:outline-none"
-                  >
-                    {STATUS.map((status) => (
-                      <option key={status.chave} value={status.chave}>
-                        {status.label}
-                      </option>
-                    ))}
-                  </select>
-
-                  <button
-                    onClick={() => handleEditar(obra.id)}
-                    className="text-xs font-sans text-lm-warm-gray hover:text-lm-charcoal border border-lm-border px-3 py-1.5 transition-colors"
-                  >
-                    Editar
-                  </button>
-
-                  {nInteresses > 0 ? (
-                    <button
-                      onClick={() => handleInteresses(obra.id)}
-                      className="text-xs font-sans px-3 py-1.5 border transition-colors text-lm-red border-lm-red-light-border bg-lm-red-light hover:bg-lm-red-light-hover"
-                    >
-                      {`${nInteresses} interesse${nInteresses > 1 ? 's' : ''}`}
-                    </button>
-                  ) : (
-                    <span className="text-xs font-sans px-3 py-1.5 border text-lm-muted border-lm-border">
-                      Sem interesses
-                    </span>
-                  )}
-
-                  {confirmandoExclusao === obra.id ? (
-                    <div className="flex items-center gap-1.5 ml-auto">
-                      <span className="text-xs text-lm-warm-gray font-sans">Confirmar exclusão?</span>
-                      <button
-                        onClick={() => handleExcluir(obra.id)}
-                        className="text-xs font-sans text-white bg-red-600 hover:bg-red-700 px-3 py-1.5 transition-colors"
-                      >
-                        Sim, excluir
-                      </button>
-                      <button
-                        onClick={() => setConfirmandoExclusao(null)}
-                        className="text-xs font-sans text-lm-warm-gray border border-lm-border px-3 py-1.5 hover:text-lm-charcoal transition-colors"
-                      >
-                        Cancelar
-                      </button>
+              <div
+                key={obra.id}
+                className="bg-white border border-lm-border p-4 flex gap-4 items-start"
+              >
+                <img
+                  src={fotoCapa(obra.id)}
+                  alt={obra.artista}
+                  className="w-16 h-20 object-cover bg-lm-image-bg flex-shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2 flex-wrap">
+                    <div>
+                      <p className="font-sans font-semibold text-lm-charcoal text-base">
+                        {obra.artista}
+                      </p>
+                      {obra.titulo && (
+                        <p className="font-sans text-sm text-lm-warm-gray italic">{obra.titulo}</p>
+                      )}
+                      <p className="font-sans text-xs text-lm-muted mt-0.5">
+                        {obra.tecnica} · {obra.ano}
+                      </p>
                     </div>
-                  ) : (
-                    <button
-                      onClick={() => setConfirmandoExclusao(obra.id)}
-                      className="text-xs font-sans text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 transition-colors ml-auto"
+                    <StatusBadge status={obra.status} />
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap gap-2 items-center">
+                    <select
+                      value={obra.status}
+                      onChange={(e) => handleStatusChange(obra.id, e.target.value)}
+                      className="border border-lm-border text-xs text-lm-charcoal px-2 py-1.5 bg-lm-ivory focus:outline-none"
                     >
-                      Excluir
+                      {STATUS.map((status) => (
+                        <option key={status.chave} value={status.chave}>
+                          {status.label}
+                        </option>
+                      ))}
+                    </select>
+
+                    <button
+                      onClick={() => handleEditar(obra.id)}
+                      className="text-xs font-sans text-lm-warm-gray hover:text-lm-charcoal border border-lm-border px-3 py-1.5 transition-colors"
+                    >
+                      Editar
                     </button>
-                  )}
+
+                    {nInteresses > 0 ? (
+                      <button
+                        onClick={() => handleInteresses(obra.id)}
+                        className="text-xs font-sans px-3 py-1.5 border transition-colors text-lm-red border-lm-red-light-border bg-lm-red-light hover:bg-lm-red-light-hover"
+                      >
+                        {`${nInteresses} interesse${nInteresses > 1 ? "s" : ""}`}
+                      </button>
+                    ) : (
+                      <span className="text-xs font-sans px-3 py-1.5 border text-lm-muted border-lm-border">
+                        Sem interesses
+                      </span>
+                    )}
+
+                    {confirmandoExclusao === obra.id ? (
+                      <div className="flex items-center gap-1.5 ml-auto">
+                        <span className="text-xs text-lm-warm-gray font-sans">
+                          Confirmar exclusão?
+                        </span>
+                        <button
+                          onClick={() => handleExcluir(obra.id)}
+                          className="text-xs font-sans text-white bg-red-600 hover:bg-red-700 px-3 py-1.5 transition-colors"
+                        >
+                          Sim, excluir
+                        </button>
+                        <button
+                          onClick={() => setConfirmandoExclusao(null)}
+                          className="text-xs font-sans text-lm-warm-gray border border-lm-border px-3 py-1.5 hover:text-lm-charcoal transition-colors"
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setConfirmandoExclusao(obra.id)}
+                        className="text-xs font-sans text-red-500 hover:text-red-700 border border-red-200 hover:border-red-400 px-3 py-1.5 transition-colors ml-auto"
+                      >
+                        Excluir
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-            )
+            );
           })}
         </div>
 
@@ -217,7 +236,13 @@ function ListaObras() {
             onClick={handleHistorico}
             className="flex items-center gap-2 text-sm text-lm-warm-gray hover:text-lm-charcoal transition-colors font-sans"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -229,7 +254,7 @@ function ListaObras() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default ListaObras
+export default ListaObras;

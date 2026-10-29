@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { supabase } from '../../services/supabase'
-import AdminHeader from '../../components/layout/AdminHeader'
-import { obras as obrasIniciais } from '../../mocks/obras'
-import { interesses } from '../../mocks/interesses'
-import { STATUS } from '../../constants/status'
-import { fotoCapa, aplicarMudancaStatus } from '../../utils/obras'
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { supabase } from "../../services/supabase";
+import AdminHeader from "../../components/layout/AdminHeader";
+import { obras as obrasIniciais } from "../../mocks/obras";
+import { interesses } from "../../mocks/interesses";
+import { STATUS } from "../../constants/status";
+import { fotoCapa, aplicarMudancaStatus } from "../../utils/obras";
 
 function InteressesObra() {
-  const { id: obraId } = useParams()
-  const navigate = useNavigate()
-  const [obras, setObras] = useState(obrasIniciais)
-  const obra = obras.find((item) => item.id === obraId)
-  const interessesDaObra = interesses.filter((interesse) => interesse.obra_id === obraId)
+  const { id: obraId } = useParams();
+  const navigate = useNavigate();
+  const [obras, setObras] = useState(obrasIniciais);
+  const obra = obras.find((item) => item.id === obraId);
+  const interessesDaObra = interesses.filter((interesse) => interesse.obra_id === obraId);
 
   function handleStatusChange(novoStatus) {
     setObras((lista) =>
-      lista.map((item) => (item.id === obraId ? aplicarMudancaStatus(item, novoStatus) : item))
-    )
+      lista.map((item) => (item.id === obraId ? aplicarMudancaStatus(item, novoStatus) : item)),
+    );
   }
 
   function handleBack() {
-    navigate('/admin')
+    navigate("/admin");
   }
 
   function handleLogout() {
-    supabase?.auth.signOut()
-    navigate('/login')
+    supabase?.auth.signOut();
+    navigate("/login");
   }
 
-  if (!obra) return null
+  if (!obra) return null;
 
   return (
     <div className="min-h-screen bg-lm-admin-bg flex flex-col">
@@ -69,8 +69,8 @@ function InteressesObra() {
 
         <h2 className="font-sans font-semibold text-lm-charcoal text-base mb-4">
           {interessesDaObra.length === 0
-            ? 'Nenhum interesse recebido'
-            : `${interessesDaObra.length} interesse${interessesDaObra.length > 1 ? 's' : ''} recebido${interessesDaObra.length > 1 ? 's' : ''}`}
+            ? "Nenhum interesse recebido"
+            : `${interessesDaObra.length} interesse${interessesDaObra.length > 1 ? "s" : ""} recebido${interessesDaObra.length > 1 ? "s" : ""}`}
         </h2>
 
         <div className="space-y-3">
@@ -78,7 +78,7 @@ function InteressesObra() {
             <div key={interesse.id} className="bg-white border border-lm-border p-5">
               <p className="font-sans font-semibold text-lm-charcoal text-base">{interesse.nome}</p>
               <p className="text-xs text-lm-muted font-sans mt-0.5">
-                Recebido em {new Date(interesse.criado_em).toLocaleDateString('pt-BR')}
+                Recebido em {new Date(interesse.criado_em).toLocaleDateString("pt-BR")}
               </p>
 
               <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -86,7 +86,13 @@ function InteressesObra() {
                   href={`mailto:${interesse.email}`}
                   className="flex items-center gap-2 text-sm font-sans text-lm-red hover:text-lm-red-dark transition-colors"
                 >
-                  <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg
+                    className="w-4 h-4 flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -97,7 +103,7 @@ function InteressesObra() {
                 </a>
 
                 <a
-                  href={`https://wa.me/55${interesse.telefone.replace(/\D/g, '')}`}
+                  href={`https://wa.me/55${interesse.telefone.replace(/\D/g, "")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-sm font-sans text-lm-red hover:text-lm-red-dark transition-colors"
@@ -121,7 +127,7 @@ function InteressesObra() {
         </div>
       </main>
     </div>
-  )
+  );
 }
 
-export default InteressesObra
+export default InteressesObra;

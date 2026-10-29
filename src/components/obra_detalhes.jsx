@@ -4,7 +4,19 @@ import StatusBadge from "./common/StatusBadge";
 import Back from "../assets/back.png";
 import whatsVerde from "../assets/whatsapp-verde.png";
 
-function Detalhe({ id, img, fotos, artista, tecnica, ano, tipo, status, titulo, valor, descricao }) {
+function Detalhe({
+  id,
+  img,
+  fotos,
+  artista,
+  tecnica,
+  ano,
+  tipo,
+  status,
+  titulo,
+  valor,
+  descricao,
+}) {
   const galeria = fotos && fotos.length > 0 ? fotos : [img];
   const [fotoIdx, setFotoIdx] = useState(0);
   const tipoLabel = tipo === "quadro" ? "Quadro" : "Escultura";
@@ -66,9 +78,7 @@ function Detalhe({ id, img, fotos, artista, tecnica, ano, tipo, status, titulo, 
               ))}
             </div>
 
-            {descricao && (
-              <p className="text-sm text-lm-warm-gray leading-relaxed">{descricao}</p>
-            )}
+            {descricao && <p className="text-sm text-lm-warm-gray leading-relaxed">{descricao}</p>}
           </div>
 
           <div>
@@ -82,8 +92,9 @@ function Detalhe({ id, img, fotos, artista, tecnica, ano, tipo, status, titulo, 
                     Tenho interesse
                   </Link>
                   <p className="text-xs text-center">
-                    Ao clicar, você será convidado a preencher um breve formulário. Suas informações serão
-                    enviadas diretamente para a galeria, que entrará em contato para dar continuidade.
+                    Ao clicar, você será convidado a preencher um breve formulário. Suas informações
+                    serão enviadas diretamente para a galeria, que entrará em contato para dar
+                    continuidade.
                   </p>
                 </>
               ) : (

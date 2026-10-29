@@ -1,4 +1,4 @@
-import logoLM from '../../assets/images/logo-lm.png'
+import logoLM from "../../assets/images/logo-lm.png";
 
 function AdminHeader({ title, onBack, onLogout }) {
   return (
@@ -11,8 +11,18 @@ function AdminHeader({ title, onBack, onLogout }) {
               className="text-lm-warm-gray hover:text-lm-charcoal transition-colors p-1"
               aria-label="Voltar"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                />
               </svg>
             </button>
           )}
@@ -28,7 +38,7 @@ function AdminHeader({ title, onBack, onLogout }) {
         </button>
       </div>
     </header>
-  )
+  );
 }
 
-export default AdminHeader
+export default AdminHeader;
