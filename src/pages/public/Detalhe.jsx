@@ -27,6 +27,9 @@ function Detalhe({
     largura_cm && altura_cm
       ? `${largura_cm} × ${altura_cm}${profundidade_cm ? ` × ${profundidade_cm}` : ""} cm`
       : null;
+  const nomeObraTexto = titulo ? ` "${titulo}"` : "";
+  const mensagemWhatsApp = `Olá! Tenho interesse na obra${nomeObraTexto} de ${artista} (${ano}), com a técnica ${tecnica}. Poderia me passar mais informações?`;
+  const linkWhatsApp = `https://wa.me/5585981739663?text=${encodeURIComponent(mensagemWhatsApp)}`;
   const specs = [
     ["Técnica", tecnica],
     ["Ano", ano],
@@ -118,7 +121,7 @@ function Detalhe({
               <p className="text-center text-xs">Prefere falar diretamente?</p>
               <a
                 className="block border border-emerald-400 hover:bg-emerald-400/10"
-                href="https://wa.me/5511999999999"
+                href={linkWhatsApp}
                 target="_blank"
                 rel="noreferrer"
               >
