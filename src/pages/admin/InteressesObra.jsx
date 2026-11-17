@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../services/supabase";
+import { atualizarStatusObra } from "../../services/obras";
 import AdminHeader from "../../components/layout/AdminHeader";
 import Aviso from "../../components/common/Aviso";
-import { useTodasObras } from "../../hooks/useObras";
+import { useObras } from "../../hooks/useObras";
 import { useInteresses } from "../../hooks/useInteresses";
 import { STATUS } from "../../constants/status";
-import { aplicarMudancaStatus } from "../../utils/obras";
+import { fotoCapa } from "../../utils/fotos";
 
 function InteressesObra() {
   const { id: obraId } = useParams();
   const navigate = useNavigate();
-  const { data: obrasObtidas, loading, error } = useTodasObras();
+  const { data: obrasObtidas, loading, error } = useObras();
   const { data: interessesDaObra } = useInteresses(obraId);
   const [obras, setObras] = useState([]);
 
@@ -23,10 +24,19 @@ function InteressesObra() {
 
   const obra = obras.find((item) => item.id === obraId);
 
-  function handleStatusChange(novoStatus) {
-    setObras((lista) =>
-      lista.map((item) => (item.id === obraId ? aplicarMudancaStatus(item, novoStatus) : item)),
-    );
+  async function handleStatusChange(novoStatus) {
+    try {
+      await atualizarStatusObra(obraId, novoStatus);
+      if (novoStatus === "vendido") {
+        navigate("/admin");
+        return;
+      }
+      setObras((lista) =>
+        lista.map((item) => (item.id === obraId ? { ...item, status: novoStatus } : item)),
+      );
+    } catch {
+      alert("Não foi possível atualizar o status. Tente novamente.");
+    }
   }
 
   function handleBack() {
@@ -50,7 +60,7 @@ function InteressesObra() {
       <main className="max-w-3xl mx-auto w-full px-5 py-8 flex-1">
         <div className="bg-white border border-lm-border p-4 flex gap-4 items-center mb-6">
           <img
-            src={obra.img}
+            src={fotoCapa(obra.fotos)}
             alt={obra.artista}
             className="w-14 h-18 object-cover bg-lm-image-bg flex-shrink-0"
           />

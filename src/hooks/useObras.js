@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { listarObras, buscarObra, listarTodasObras } from "../services/obras";
+import { listarObras, buscarObra, listarHistorico } from "../services/obras";
 
 export function useObras() {
   const [data, setData] = useState(null);
@@ -8,7 +8,7 @@ export function useObras() {
 
   useEffect(() => {
     const controller = new AbortController();
-    listarObras(controller.signal)
+    listarObras({ signal: controller.signal })
       .then(setData)
       .catch((e) => {
         if (e.name !== "AbortError") setError(e);
@@ -22,14 +22,14 @@ export function useObras() {
   return { data, loading, error };
 }
 
-export function useTodasObras() {
+export function useHistorico() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    listarTodasObras(controller.signal)
+    listarHistorico(controller.signal)
       .then(setData)
       .catch((e) => {
         if (e.name !== "AbortError") setError(e);

@@ -1,43 +1,15 @@
-import { supabase } from "./supabase";
-import { interesses as interessesMock } from "../mocks/interesses";
-
-const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+import api from "./api";
 
 export async function listarTodosInteresses(signal) {
-  if (!supabase) {
-    await espera(300);
-    return interessesMock;
-  }
-  const { data, error } = await supabase
-    .from("interesses")
-    .select("*")
-    .order("criado_em", { ascending: false })
-    .abortSignal(signal);
-  if (error) throw error;
+  const { data } = await api.get("/interesses", { signal });
   return data;
 }
 
 export async function listarInteresses(obraId, signal) {
-  if (!supabase) {
-    await espera(300);
-    return interessesMock.filter((interesse) => interesse.obra_id === obraId);
-  }
-  const { data, error } = await supabase
-    .from("interesses")
-    .select("*")
-    .eq("obra_id", obraId)
-    .order("criado_em", { ascending: false })
-    .abortSignal(signal);
-  if (error) throw error;
+  const { data } = await api.get(`/obras/${encodeURIComponent(obraId)}/interesses`, { signal });
   return data;
 }
 
 export async function enviarInteresse(dados) {
-  if (!supabase) {
-    await espera(500);
-    console.log("[modo exemplo] interesse que seria enviado:", dados);
-    return;
-  }
-  const { error } = await supabase.from("interesses").insert(dados);
-  if (error) throw error;
+  await api.post("/interesses", dados);
 }

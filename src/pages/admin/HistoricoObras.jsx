@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/supabase";
+import { reativarObra } from "../../services/obras";
 import AdminHeader from "../../components/layout/AdminHeader";
 import StatusBadge from "../../components/common/StatusBadge";
 import Aviso from "../../components/common/Aviso";
-import { useTodasObras } from "../../hooks/useObras";
+import { useHistorico } from "../../hooks/useObras";
+import { fotoCapa } from "../../utils/fotos";
 
 function HistoricoObras() {
   const navigate = useNavigate();
-  const { data: obrasObtidas, loading, error } = useTodasObras();
+  const { data: obrasObtidas, loading, error } = useHistorico();
   const [obras, setObras] = useState([]);
 
   useEffect(() => {
@@ -17,12 +19,13 @@ function HistoricoObras() {
     if (obrasObtidas) setObras(obrasObtidas);
   }, [obrasObtidas]);
 
-  const obrasInativas = obras.filter((obra) => !obra.ativa);
-
-  function handleReativar(obraId) {
-    setObras((lista) =>
-      lista.map((obra) => (obra.id === obraId ? { ...obra, ativa: true, status: "aberto" } : obra)),
-    );
+  async function handleReativar(obraId) {
+    try {
+      await reativarObra(obraId);
+      setObras((lista) => lista.filter((obra) => obra.id !== obraId));
+    } catch {
+      alert("Não foi possível reativar a obra. Tente novamente.");
+    }
   }
 
   function handleBack() {
@@ -48,19 +51,19 @@ function HistoricoObras() {
 
         {!loading &&
           !error &&
-          (obrasInativas.length === 0 ? (
+          (obras.length === 0 ? (
             <div className="bg-white border border-lm-border p-10 text-center text-lm-muted font-sans text-sm">
               Nenhuma obra no histórico.
             </div>
           ) : (
             <div className="space-y-3">
-              {obrasInativas.map((obra) => (
+              {obras.map((obra) => (
                 <div
                   key={obra.id}
                   className="bg-white border border-lm-border p-4 flex gap-4 items-center"
                 >
                   <img
-                    src={obra.img}
+                    src={fotoCapa(obra.fotos)}
                     alt={obra.artista}
                     className="w-14 h-18 object-cover bg-lm-image-bg flex-shrink-0"
                   />
@@ -72,6 +75,10 @@ function HistoricoObras() {
                     <p className="text-xs text-lm-muted font-sans mt-0.5 flex items-center gap-2">
                       {obra.tecnica} · {obra.ano}
                       <StatusBadge status={obra.status} />
+                    </p>
+                    <p className="text-xs text-lm-muted font-sans mt-1">
+                      {obra.total_interesses} interesse{obra.total_interesses !== 1 ? "s" : ""}{" "}
+                      recebido{obra.total_interesses !== 1 ? "s" : ""}
                     </p>
                   </div>
 
