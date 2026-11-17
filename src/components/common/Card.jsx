@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
+import { fotoCapa } from "../../utils/fotos";
 
-function Card({ id, img, artista, tecnica, ano }) {
+function Card({ id, fotos, artista, tecnica, ano }) {
   return (
     <Link to={`/obra/${id}`} className="flex flex-col">
       <div className="overflow-hidden">
         <img
-          src={img}
+          src={fotoCapa(fotos)}
           alt={`${artista}, ${tecnica}, ${ano}`}
           loading="lazy"
           className="aspect-4/5 w-full object-cover transition-transform duration-600 hover:scale-110"
