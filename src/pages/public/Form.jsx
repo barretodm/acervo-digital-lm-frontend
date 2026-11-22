@@ -6,6 +6,7 @@ import Main from "../../components/layout/Main";
 import logo from "../../assets/logo-lm-v3.png";
 import Backarrow from "../../assets/back.png";
 import { enviarInteresse } from "../../services/interesses";
+import { fotoCapa } from "../../utils/fotos";
 
 const inputCls = "bg-white p-3 mb-4";
 const labelCls = "text-xs uppercase mb-1";
@@ -48,7 +49,7 @@ function Form({ obra }) {
           </Link>
 
           <div className="flex gap-4 items-center bg-white p-3">
-            <img src={obra.img} alt="" className="h-20 w-16 object-cover" />
+            <img src={fotoCapa(obra.fotos)} alt="" className="h-20 w-16 object-cover" />
             <div>
               <p className="font-medium">{obra.artista}</p>
               <div className="flex gap-2 text-sm text-lm-warm-gray">

@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../../services/supabase";
+import { atualizarStatusObra, excluirObra } from "../../services/obras";
 import AdminHeader from "../../components/layout/AdminHeader";
 import StatusBadge from "../../components/common/StatusBadge";
 import Aviso from "../../components/common/Aviso";
-import { useTodasObras } from "../../hooks/useObras";
+import { useObras, useHistorico } from "../../hooks/useObras";
 import { useTodosInteresses } from "../../hooks/useInteresses";
 import { STATUS, STATUS_RESUMO } from "../../constants/status";
-import { aplicarMudancaStatus } from "../../utils/obras";
+import { fotoCapa } from "../../utils/fotos";
 
 function ListaObras() {
   const navigate = useNavigate();
-  const { data: obrasObtidas, loading, error } = useTodasObras();
+  const { data: obrasObtidas, loading, error } = useObras();
+  const { data: historico } = useHistorico();
   const { data: interesses } = useTodosInteresses();
   const [obras, setObras] = useState([]);
   const [confirmandoExclusao, setConfirmandoExclusao] = useState(null);
@@ -23,24 +25,39 @@ function ListaObras() {
     if (obrasObtidas) setObras(obrasObtidas);
   }, [obrasObtidas]);
 
-  const obrasAtivas = obras.filter((obra) => obra.ativa);
   const obrasFiltradas = filtroStatus
-    ? obrasAtivas.filter((obra) => obra.status === filtroStatus)
-    : obrasAtivas;
+    ? obras.filter((obra) => obra.status === filtroStatus)
+    : obras;
 
   function toggleFiltro(status) {
     setFiltroStatus((atual) => (atual === status ? null : status));
   }
 
-  function handleStatusChange(obraId, novoStatus) {
-    setObras((lista) =>
-      lista.map((obra) => (obra.id === obraId ? aplicarMudancaStatus(obra, novoStatus) : obra)),
-    );
+  async function handleStatusChange(obraId, novoStatus) {
+    try {
+      await atualizarStatusObra(obraId, novoStatus);
+      setObras((lista) =>
+        novoStatus === "vendido"
+          ? lista.filter((obra) => obra.id !== obraId)
+          : lista.map((obra) => (obra.id === obraId ? { ...obra, status: novoStatus } : obra)),
+      );
+    } catch {
+      alert("Não foi possível atualizar o status. Tente novamente.");
+    }
   }
 
-  function handleExcluir(obraId) {
-    setObras((lista) => lista.filter((obra) => obra.id !== obraId));
-    setConfirmandoExclusao(null);
+  async function handleExcluir(obraId) {
+    try {
+      await excluirObra(obraId);
+      setObras((lista) => lista.filter((obra) => obra.id !== obraId));
+      setConfirmandoExclusao(null);
+    } catch (erro) {
+      const mensagem =
+        erro.response?.status === 409
+          ? erro.response.data.error
+          : "Não foi possível excluir a obra. Tente novamente.";
+      alert(mensagem);
+    }
   }
 
   function handleLogout() {
@@ -95,9 +112,7 @@ function ListaObras() {
             </p>
             <div className="grid grid-cols-3 gap-3 mb-6">
               {STATUS_RESUMO.map((status) => {
-                const quantidade = obrasAtivas.filter(
-                  (obra) => obra.status === status.chave,
-                ).length;
+                const quantidade = obras.filter((obra) => obra.status === status.chave).length;
                 const ativo = filtroStatus === status.chave;
 
                 return (
@@ -141,7 +156,7 @@ function ListaObras() {
             <h2 className="font-sans font-semibold text-lm-charcoal text-base mb-4">
               {filtroStatus
                 ? `${obrasFiltradas.length} obra${obrasFiltradas.length !== 1 ? "s" : ""} — ${STATUS.find((status) => status.chave === filtroStatus).label}`
-                : `Obras em exibição (${obrasAtivas.length})`}
+                : `Obras em exibição (${obras.length})`}
             </h2>
 
             <div className="space-y-3">
@@ -161,7 +176,7 @@ function ListaObras() {
                     className="bg-white border border-lm-border p-4 flex gap-4 items-start"
                   >
                     <img
-                      src={obra.img}
+                      src={fotoCapa(obra.fotos)}
                       alt={obra.artista}
                       className="w-16 h-20 object-cover bg-lm-image-bg flex-shrink-0"
                     />
@@ -267,7 +282,7 @@ function ListaObras() {
                     d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
                   />
                 </svg>
-                Ver histórico de obras removidas ({obras.filter((obra) => !obra.ativa).length})
+                Ver histórico de obras removidas ({(historico ?? []).length})
               </button>
             </div>
           </>

@@ -6,7 +6,6 @@ import whatsVerde from "../../assets/whatsapp-verde.png";
 
 function Detalhe({
   id,
-  img,
   fotos,
   artista,
   tecnica,
@@ -16,15 +15,26 @@ function Detalhe({
   titulo,
   valor,
   descricao,
+  largura_cm,
+  altura_cm,
+  profundidade_cm,
 }) {
-  const galeria = fotos && fotos.length > 0 ? fotos : [img];
+  const galeria = fotos ?? [];
   const [fotoIdx, setFotoIdx] = useState(0);
   const tipoLabel = tipo === "quadro" ? "Quadro" : "Escultura";
   const podeManifestarInteresse = status === "aberto" || status === "em_conversa";
+  const dimensoes =
+    largura_cm && altura_cm
+      ? `${largura_cm} × ${altura_cm}${profundidade_cm ? ` × ${profundidade_cm}` : ""} cm`
+      : null;
+  const nomeObraTexto = titulo ? ` "${titulo}"` : "";
+  const mensagemWhatsApp = `Olá! Tenho interesse na obra${nomeObraTexto} de ${artista} (${ano}), com a técnica ${tecnica}. Poderia me passar mais informações?`;
+  const linkWhatsApp = `https://wa.me/5585981739663?text=${encodeURIComponent(mensagemWhatsApp)}`;
   const specs = [
     ["Técnica", tecnica],
     ["Ano", ano],
     ["Tipo", tipoLabel],
+    ...(dimensoes ? [["Dimensões", dimensoes]] : []),
     ...(valor ? [["Valor", valor]] : []),
   ];
 
@@ -38,7 +48,7 @@ function Detalhe({
       <div className="flex flex-col md:flex-row gap-8 md:gap-15">
         <div>
           <img
-            src={galeria[fotoIdx]}
+            src={galeria[fotoIdx]?.url}
             alt={`${artista}, ${tecnica}`}
             className="w-full md:w-auto md:h-150 object-contain"
           />
@@ -46,13 +56,17 @@ function Detalhe({
             <div className="flex gap-2 mt-3">
               {galeria.map((foto, i) => (
                 <button
-                  key={foto}
+                  key={foto.id}
                   onClick={() => setFotoIdx(i)}
                   className={`w-16 h-16 overflow-hidden bg-lm-image-bg transition-all ${
                     i === fotoIdx ? "ring-2 ring-lm-charcoal" : "opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <img src={foto} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
+                  <img
+                    src={foto.url}
+                    alt={`Foto ${i + 1}`}
+                    className="w-full h-full object-cover"
+                  />
                 </button>
               ))}
             </div>
@@ -107,7 +121,7 @@ function Detalhe({
               <p className="text-center text-xs">Prefere falar diretamente?</p>
               <a
                 className="block border border-emerald-400 hover:bg-emerald-400/10"
-                href="https://wa.me/5511999999999"
+                href={linkWhatsApp}
                 target="_blank"
                 rel="noreferrer"
               >

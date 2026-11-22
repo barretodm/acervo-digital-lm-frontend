@@ -16,8 +16,8 @@ function Footer({ img }) {
           <div className="flex flex-col gap-3">
             <div className="flex gap-1 items-center">
               <img src={whats} alt="" className="aspect-square h-3.5 w-auto" />
-              <a href="https://wa.me/5511999999999" target="_blank" rel="noreferrer">
-                (11) 99999-9999 — WhatsApp
+              <a href="https://wa.me/5585981739663" target="_blank" rel="noreferrer">
+                (85) 98173-9663 — WhatsApp
               </a>
             </div>
             <div>
